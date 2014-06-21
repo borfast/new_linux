@@ -16,7 +16,7 @@ sudo apt-get -y upgrade
 sudo apt-get -y install sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-setuptools python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager gnome-session-flashback clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras
 
 ## Development shit
-sudo apt-get -y install apache2 php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
+sudo apt-get -y install apache2 php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
@@ -46,13 +46,6 @@ sudo pip install ansible
 
 ## Git up
 sudo gem install git-up
-
-## Git flow
-## TODO: shell completion
-wget https://raw.github.com/nvie/gitflow/develop/contrib/gitflow-installer.sh &&
-chmod +x ./gitflow-installer.sh &&
-INSTALL_PREFIX=~/progs/bin ./gitflow-installer.sh &&
-rm -rf ./gitflow-installer.sh
 
 ## RoboMongo
 if [ $ARCH == 64 ]
