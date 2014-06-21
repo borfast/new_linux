@@ -2,6 +2,13 @@
 
 ## Assuming Ubuntu 14.04
 
+## Installing .deb packages could be done in a single go if I added the
+## necessary repositories beforehand but this way the script is more
+## modular and I can comment out any sections if I want to.
+
+## TODO: install Sublime Text, Prey
+## TODO: Rewrite this with Ansible?
+
 ## Let's detect the architecture
 if [[ $(getconf LONG_BIT) = "64" ]]
 then
@@ -21,9 +28,12 @@ sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
 
-## libdvdcss (also updates VLC if a newer version is available)
+## libdvdcss and latest VLC
 sudo add-apt-repository -y ppa:videolan/stable-daily &&
-sudo apt-get update &&
+sudo apt-get update
+echo 'deb http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
+echo '# deb-src http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
+wget -O - http://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
 sudo apt-get -y install libdvdcss2 vlc
 
 ## Install Google Chrome
@@ -50,6 +60,11 @@ sudo gem install git-up
 ## Git flow completion
 sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
 
+## Java
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get -y install oracle-java8-installer
+
 ## RoboMongo
 if [ $ARCH == 64 ]
 then
@@ -60,9 +75,6 @@ fi
 wget http://robomongo.org/files/linux/robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
 sudo dpkg -i ./robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
 rm -rf ./robomongo-0.8.4-${ROBOMONGO_ARCH}.deb
-
-
-## TODO: install Sublime Text, Prey
 
 
 ## Clean up
