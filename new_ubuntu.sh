@@ -13,7 +13,7 @@ fi
 ## Common software
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-setuptools python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager gnome-session-flashback clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras
+sudo apt-get -y install sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-setuptools python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager gnome-session-flashback clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion
 
 ## Development shit
 sudo apt-get -y install apache2 php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
@@ -46,6 +46,9 @@ sudo pip install ansible
 
 ## Git up
 sudo gem install git-up
+
+## Git flow completion
+sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
 
 ## RoboMongo
 if [ $ARCH == 64 ]
