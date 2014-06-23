@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Assuming Ubuntu 14.04
+## Assuming Mint 17 or Ubuntu 14.04
 
 ## Installing .deb packages could be done in a single go if I added the
 ## necessary repositories beforehand but this way the script is more
@@ -12,7 +12,7 @@
 ## Let's detect the architecture
 if [[ $(getconf LONG_BIT) = "64" ]]
 then
-	ARCH=64
+    ARCH=64
 else
 	ARCH=32
 fi
@@ -20,10 +20,17 @@ fi
 ## Common software
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install bleachbit gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-setuptools python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager gnome-session-flashback clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion
+sudo apt-get -y install bleachbit gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion
+
+## Only for Ubuntu, Linux Mint doesn't need hacks to have a decent desktop environment.
+#sudo apt-get install gnome-session-flashback
+
+## If we want to make sure we get the very latest node and PHP stuff, add these PPAs.
+sudo apt-add-repository -y ppa:chris-lea/node.js
+#sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
-sudo apt-get -y install apache2 php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
+sudo apt-get -y install apache2 nodejs python-setuptools python-dev php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
