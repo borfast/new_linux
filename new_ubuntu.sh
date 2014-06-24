@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Assuming Mint 17 or Ubuntu 14.04
+## Assuming Linux Mint 17. Should also mostly work with Ubuntu 14.04
 
 ## Installing .deb packages could be done in a single go if I added the
 ## necessary repositories beforehand but this way the script is more
@@ -30,7 +30,7 @@ sudo apt-add-repository -y ppa:chris-lea/node.js
 #sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
-sudo apt-get -y install build-essential python-setuptools python-dev apache2 nodejs php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
+sudo apt-get -y install sublime-text build-essential python-setuptools python-dev apache2 nodejs php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
