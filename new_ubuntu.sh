@@ -30,7 +30,7 @@ sudo apt-add-repository -y ppa:chris-lea/node.js
 #sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
-sudo apt-get -y install apache2 nodejs python-setuptools python-dev php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
+sudo apt-get -y install build-essential python-setuptools python-dev apache2 nodejs php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
