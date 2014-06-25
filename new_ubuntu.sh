@@ -6,7 +6,7 @@
 ## necessary repositories beforehand but this way the script is more
 ## modular and I can comment out any sections if I want to.
 
-## TODO: install Sublime Text, Prey
+## TODO: install Prey, liquidprompt
 ## TODO: Rewrite this with Ansible?
 
 ## Let's detect the architecture
