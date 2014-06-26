@@ -70,6 +70,11 @@ sudo gem install git-up
 ## Git flow completion
 sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
 
+## Liquidprompt - should already be in .bashrc
+cd
+git clone https://github.com/nojhan/liquidprompt.git
+cd -
+
 ## Java
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
