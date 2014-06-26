@@ -58,6 +58,9 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 # Python pip
 sudo easy_install pip
 
+## Virtualenvwrapper and friends
+sudo pip install virtualenvwrapper
+
 ## Ansible
 sudo pip install ansible
 
