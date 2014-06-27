@@ -75,6 +75,10 @@ cd
 git clone https://github.com/nojhan/liquidprompt.git
 cd -
 
+## PHP Composer
+mkdir -p ~/progs/bin
+curl -sS https://getcomposer.org/installer | php -- --install-dir=~/progs/bin
+
 ## Java
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
