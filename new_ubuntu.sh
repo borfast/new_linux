@@ -14,7 +14,7 @@ if [[ $(getconf LONG_BIT) = "64" ]]
 then
     ARCH=64
 else
-	ARCH=32
+    ARCH=32
 fi
 
 ## Common software
@@ -46,9 +46,9 @@ sudo apt-get -y install libdvdcss2 vlc
 ## Install Google Chrome
 if [ $ARCH == 64 ]
 then
-	CHROME_ARCH='amd64'
+    CHROME_ARCH='amd64'
 else
-	CHROME_ARCH='i386'
+    CHROME_ARCH='i386'
 fi
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_${CHROME_ARCH}.deb &&
 sudo dpkg -i google-chrome-stable_current_${CHROME_ARCH}.deb &&
@@ -87,9 +87,9 @@ sudo apt-get -y install oracle-java8-installer
 ## RoboMongo
 if [ $ARCH == 64 ]
 then
-	ROBOMONGO_ARCH='x86_64'
+    ROBOMONGO_ARCH='x86_64'
 else
-	ROBOMONGO_ARCH='i386'
+    ROBOMONGO_ARCH='i386'
 fi
 wget http://robomongo.org/files/linux/robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
 sudo dpkg -i ./robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
