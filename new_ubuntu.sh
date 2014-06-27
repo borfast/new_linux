@@ -30,7 +30,7 @@ sudo apt-add-repository -y ppa:chris-lea/node.js
 #sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
-sudo apt-get -y install sublime-text build-essential python-setuptools python-dev apache2 nodejs php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench
+sudo apt-get -y install sublime-text build-essential python-setuptools python-dev apache2 nodejs php5 php5-cli php5-json php5-mysql php5-dev php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench libsqlite3-dev
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
@@ -70,10 +70,13 @@ sudo gem install git-up
 ## Git flow completion
 sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
 
-## Liquidprompt - should already be in .bashrc
+## Liquidprompt (https://github.com/nojhan/liquidprompt) - should already be in .bashrc
 cd
 git clone https://github.com/nojhan/liquidprompt.git
 cd -
+
+## Mailcatcher - needs libsqlite3-dev (http://mailcatcher.me/)
+sudo gem install mailcatcher
 
 ## PHP Composer
 mkdir -p ~/progs/bin
