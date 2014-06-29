@@ -64,6 +64,9 @@ sudo pip install virtualenvwrapper
 ## Ansible
 sudo pip install ansible
 
+## Fabric
+sudo pip install fabric
+
 ## Git up
 sudo gem install git-up
 
