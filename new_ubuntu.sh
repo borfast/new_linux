@@ -65,7 +65,7 @@ sudo pip install virtualenvwrapper
 sudo pip install ansible
 
 ## Fabric
-sudo pip install fabric
+sudo pip install fabric fexpect
 
 ## Git up
 sudo gem install git-up
