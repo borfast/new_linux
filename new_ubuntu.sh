@@ -56,19 +56,19 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 
 # Python pip
-sudo easy_install pip
+sudo easy_install -U pip
 
 ## Virtualenvwrapper and friends
-sudo pip install virtualenvwrapper
+sudo pip install -U virtualenvwrapper
 
 ## Ansible
-sudo pip install ansible
+sudo pip install -U ansible
 
 ## Fabric
-sudo pip install fabric fexpect
+sudo pip install -U fabric fexpect
 
 ## Git up
-sudo gem install git-up
+sudo gem install -U git-up
 
 ## Git flow completion
 sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
