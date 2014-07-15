@@ -55,8 +55,11 @@ sudo dpkg -i google-chrome-stable_current_${CHROME_ARCH}.deb &&
 rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 
-# Python pip
+## Python pip
 sudo easy_install -U pip
+
+## Python PEP 8
+sudo pip install -U pep8
 
 ## Virtualenvwrapper and friends
 sudo pip install -U virtualenvwrapper
