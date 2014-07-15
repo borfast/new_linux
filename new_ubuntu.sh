@@ -88,6 +88,9 @@ sudo gem install mailcatcher
 mkdir -p ~/progs/bin
 curl -sS https://getcomposer.org/installer | php -- --install-dir=~/progs/bin
 
+## PHP CodeSniffer (assumes ~/progs/bin is in system path)
+composer.phar global require "squizlabs/php_codesniffer=*"
+
 ## Java
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
