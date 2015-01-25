@@ -20,7 +20,7 @@ fi
 ## Common software
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer
+sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl whois synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer
 
 ## Only for Ubuntu, Linux Mint doesn't need hacks to have a decent desktop environment.
 #sudo apt-get install gnome-session-flashback
