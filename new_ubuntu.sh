@@ -42,7 +42,7 @@ sudo add-apt-repository -y ppa:videolan/stable-daily &&
 sudo apt-get update
 echo 'deb http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
 echo '# deb-src http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
-wget -O - http://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
+curl http://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
 sudo apt-get -y install libdvdcss2 vlc
 
 ## Install Google Chrome
@@ -52,7 +52,7 @@ then
 else
     CHROME_ARCH='i386'
 fi
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_${CHROME_ARCH}.deb &&
+curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_${CHROME_ARCH}.deb &&
 sudo dpkg -i google-chrome-stable_current_${CHROME_ARCH}.deb &&
 rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
@@ -60,7 +60,7 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 ## Python pip
 mkdir /tmp/new_ubuntu
 cd /tmp/new_ubuntu
-curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
+curl -O https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py
 rm -rf /tmp/new_ubuntu
 
@@ -80,7 +80,7 @@ sudo pip install -U fabric fexpect
 sudo gem install -U git-up
 
 ## Git flow completion
-sudo wget https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash -O /etc/bash_completion.d/git-flow-completion.bash
+sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
 
 ## Liquidprompt (https://github.com/nojhan/liquidprompt) - should already be in .bashrc
 cd
@@ -110,9 +110,9 @@ then
 else
     ROBOMONGO_ARCH='i386'
 fi
-wget http://robomongo.org/files/linux/robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
-sudo dpkg -i ./robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
-rm -rf ./robomongo-0.8.4-${ROBOMONGO_ARCH}.deb
+curl -O http://robomongo.org/files/linux/robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
+sudo dpkg -i ./robomongo-0.8.5-${ROBOMONGO_ARCH}.deb &&
+rm -rf ./robomongo-0.8.5-${ROBOMONGO_ARCH}.deb
 
 
 ## Clean up
