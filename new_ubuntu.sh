@@ -21,7 +21,7 @@ fi
 sudo apt-add-repository -y ppa:inkscape.dev/stable
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl whois synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer
+sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl whois synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop
 
 ## Only for Ubuntu; Linux Mint doesn't need hacks to have a decent desktop environment.
 #sudo apt-get install gnome-session-flashback
@@ -58,7 +58,11 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 
 ## Python pip
-sudo easy_install -U pip
+mkdir /tmp/new_ubuntu
+cd /tmp/new_ubuntu
+curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
+sudo python get-pip.py
+rm -rf /tmp/new_ubuntu
 
 ## Python PEP 8
 sudo pip install -U pep8
