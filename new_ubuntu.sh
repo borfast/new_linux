@@ -26,9 +26,10 @@ sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full cu
 ## Only for Ubuntu; Linux Mint doesn't need hacks to have a decent desktop environment.
 #sudo apt-get install gnome-session-flashback
 
-## If we want to make sure we get the very latest node and PHP stuff, add these PPAs.
-sudo bash -c "echo 'deb https://deb.nodesource.com/node trusty main' > /etc/apt/sources.list.d/nodesource.list"
-sudo bash -c "echo 'deb-src https://deb.nodesource.com/node trusty main' >> /etc/apt/sources.list.d/nodesource.list"
+## Add the official nodejs repository
+curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+
+## If we want to make sure we get the very latest PHP stuff, add this PPA.
 #sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
