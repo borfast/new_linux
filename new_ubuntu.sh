@@ -78,7 +78,7 @@ sudo pip install -U ansible
 sudo pip install -U fabric fexpect
 
 ## Git up
-sudo gem install -U git-up
+sudo gem install git-up
 
 ## Git flow completion
 sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
