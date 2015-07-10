@@ -70,6 +70,8 @@ sudo pip install -U pep8
 
 ## Virtualenvwrapper and friends
 sudo pip install -U virtualenvwrapper
+echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.profile
+echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.profile
 
 ## Ansible
 sudo pip install -U ansible
