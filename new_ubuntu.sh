@@ -88,6 +88,8 @@ sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubu
 ## Liquidprompt (https://github.com/nojhan/liquidprompt) - should already be in .bashrc
 cd
 git clone https://github.com/nojhan/liquidprompt.git
+echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
+echo "[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
 cd -
 
 ## Mailcatcher - needs libsqlite3-dev (http://mailcatcher.me/)
