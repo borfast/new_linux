@@ -33,7 +33,7 @@ curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 #sudo apt-add-repository -y ppa:ondrej/php5
 
 ## Development shit
-sudo apt-get -y install sublime-text build-essential python-setuptools python-dev apache2 nodejs php5 php-pear php5-cli php5-json php5-mysql php5-pgsql php5-sqlite php5-dev php5-mongo php5-xdebug php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server postgresql postgresql-client postgresql-contrib ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev
+sudo apt-get -y install sublime-text build-essential python-setuptools python-dev apache2 nodejs php5 php-pear php5-cli php5-json php5-mysql php5-pgsql php5-sqlite php5-dev php5-mongo php5-xdebug php5-curl php5-gd php5-mcrypt git git-flow gitg openjdk-7-jdk terminator meld mysql-client mysql-server postgresql postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev ruby2.0 ruby2.0-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev
 sudo a2enmod ssl rewrite
 sudo php5enmod mcrypt
 sudo service apache2 restart
