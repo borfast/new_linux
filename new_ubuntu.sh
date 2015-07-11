@@ -6,7 +6,7 @@
 ## necessary repositories beforehand but this way the script is more
 ## modular and I can comment out any sections if I want to.
 
-## TODO: install Prey, liquidprompt
+## TODO: install Prey
 ## TODO: Rewrite this with Ansible?
 
 ## Let's detect the architecture
@@ -43,7 +43,7 @@ sudo add-apt-repository -y ppa:videolan/stable-daily &&
 sudo apt-get update
 echo 'deb http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
 echo '# deb-src http://download.videolan.org/pub/debian/stable/ /' | sudo tee -a /etc/apt/sources.list.d/libdvdcss.list &&
-curl http://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
+curl http://download.videolan.org/pub/debian/videolan-apt.asc | sudo apt-key add -
 sudo apt-get -y install libdvdcss2 vlc
 
 ## Install Google Chrome
