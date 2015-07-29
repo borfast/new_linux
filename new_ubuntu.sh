@@ -60,10 +60,12 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 ## Python pip
 mkdir /tmp/new_ubuntu
-cd /tmp/new_ubuntu
+pushd $HOME
+mkdir ./new_ubuntu_temp
+cd new_ubuntu_temp
 curl -O https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py
-rm -rf /tmp/new_ubuntu
+popd
 
 ## Python PEP 8
 sudo pip install -U pep8
@@ -86,17 +88,17 @@ sudo gem install git-up
 sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
 
 ## Liquidprompt (https://github.com/nojhan/liquidprompt) - should already be in .bashrc
-cd
+pushd $HOME
 git clone https://github.com/nojhan/liquidprompt.git
 echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
 echo "[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
-cd -
+popd
 
 ## Mailcatcher - needs libsqlite3-dev (http://mailcatcher.me/)
 sudo gem install mailcatcher
 
 ## PHP Composer
-mkdir -p ~/progs/bin
+mkdir -p $HOME/progs/bin
 curl -sS https://getcomposer.org/installer | php -- --install-dir=~/progs/bin
 
 ## PHP CodeSniffer (phpcs) and Mess Detector (phpmd)
