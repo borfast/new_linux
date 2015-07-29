@@ -121,7 +121,7 @@ then
 else
     ROBOMONGO_ARCH='i386'
 fi
-curl -O http://robomongo.org/files/linux/robomongo-0.8.4-${ROBOMONGO_ARCH}.deb &&
+curl -O http://robomongo.org/files/linux/robomongo-0.8.5-${ROBOMONGO_ARCH}.deb &&
 sudo dpkg -i ./robomongo-0.8.5-${ROBOMONGO_ARCH}.deb &&
 rm -rf ./robomongo-0.8.5-${ROBOMONGO_ARCH}.deb
 
