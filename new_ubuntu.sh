@@ -17,6 +17,11 @@ else
     ARCH=32
 fi
 
+# Let's work in a temporary directory that is destroyed at the end of the script
+mkdir $HOME/new_ubuntu_temp_and_a_random_string
+pushd $HOME/new_ubuntu_temp_and_a_random_string
+
+
 ## Common software
 sudo apt-add-repository -y ppa:inkscape.dev/stable
 sudo apt-get update
@@ -59,12 +64,8 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 
 ## Python pip
-mkdir $HOME/new_ubuntu_temp_and_a_random_string
-pushd $HOME/new_ubuntu_temp_and_a_random_string
 curl -O https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py
-popd
-rm -rf $HOME/new_ubuntu_temp_and_a_random_string
 
 ## Python PEP 8
 sudo pip install -U pep8
@@ -98,7 +99,7 @@ sudo gem install mailcatcher
 
 ## PHP Composer
 mkdir -p $HOME/progs/bin
-curl -sS https://getcomposer.org/installer | php -- --install-dir=~/progs/bin
+curl -sS https://getcomposer.org/installer | php -- --install-dir=$HOME/progs/bin
 
 ## PHP CodeSniffer (phpcs) and Mess Detector (phpmd)
 composer.phar global require "squizlabs/php_codesniffer=*"
@@ -123,6 +124,8 @@ rm -rf ./robomongo-0.8.5-${ROBOMONGO_ARCH}.deb
 
 ## Clean up
 echo "Cleaning Up" &&
+popd &&
+rm -rf $HOME/new_ubuntu_temp_and_a_random_string &&
 sudo apt-get -f install &&
 sudo apt-get autoremove &&
 sudo apt-get -y autoclean &&
