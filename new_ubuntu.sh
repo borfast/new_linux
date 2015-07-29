@@ -59,13 +59,12 @@ rm -f google-chrome-stable_current_${CHROME_ARCH}.deb
 
 
 ## Python pip
-mkdir /tmp/new_ubuntu
-pushd $HOME
-mkdir ./new_ubuntu_temp
-cd new_ubuntu_temp
+mkdir $HOME/new_ubuntu_temp_and_a_random_string
+pushd $HOME/new_ubuntu_temp_and_a_random_string
 curl -O https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py
 popd
+rm -rf $HOME/new_ubuntu_temp_and_a_random_string
 
 ## Python PEP 8
 sudo pip install -U pep8
