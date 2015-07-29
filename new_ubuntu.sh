@@ -17,6 +17,11 @@ else
     ARCH=32
 fi
 
+# Create the user bin folder and add it to the PATH
+mkdir -p $HOME/progs/bin
+echo "PATH DEFAULT=${PATH}:${HOME}/progs/bin" >> $HOME/.pam_environment
+export PATH="$PATH:$HOME/progs/bin"
+
 # Let's work in a temporary directory that is destroyed at the end of the script
 mkdir $HOME/new_ubuntu_temp_and_a_random_string
 pushd $HOME/new_ubuntu_temp_and_a_random_string
@@ -98,7 +103,6 @@ popd
 sudo gem install mailcatcher
 
 ## PHP Composer
-mkdir -p $HOME/progs/bin
 curl -sS https://getcomposer.org/installer | php -- --install-dir=$HOME/progs/bin
 
 ## PHP CodeSniffer (phpcs) and Mess Detector (phpmd)
