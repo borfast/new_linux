@@ -31,7 +31,7 @@ pushd $HOME/new_ubuntu_temp_and_a_random_string
 sudo apt-add-repository -y ppa:inkscape.dev/stable
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl whois synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop
+sudo apt-get -y install acpi gimp inkscape sysv-rc-conf vim unace unrar p7zip-full curl whois synaptic python-software-properties openjdk-7-jre openjdk-7-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav vlc gstreamer0.10-plugins-bad-multiverse libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop
 
 ## Only for Ubuntu; Linux Mint doesn't need hacks to have a decent desktop environment.
 #sudo apt-get install gnome-session-flashback
@@ -92,11 +92,11 @@ sudo gem install git-up
 ## Git flow completion
 sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
 
-## Liquidprompt (https://github.com/nojhan/liquidprompt) - should already be in .bashrc
+## Liquidprompt (https://github.com/nojhan/liquidprompt)
 pushd $HOME
 git clone https://github.com/nojhan/liquidprompt.git
 echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
-echo "[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
+echo "[[ $- = *i* ]] && . ~/.liquidprompt/liquidprompt" >> .bashrc
 popd
 
 ## Mailcatcher - needs libsqlite3-dev (http://mailcatcher.me/)
