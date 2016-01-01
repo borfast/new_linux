@@ -99,8 +99,10 @@ echo "# Only load Liquid Prompt in interactive shells, not from a script or from
 echo ". ~/.liquidprompt/liquidprompt" >> .bashrc
 popd
 
-## Mailcatcher - needs libsqlite3-dev (http://mailcatcher.me/)
-sudo gem install mailcatcher
+## MailHog - https://github.com/mailhog/MailHog/
+curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v0.1.8/MailHog_linux_amd64
+chmod u+x $HOME/progs/bin/mailhog
+
 
 ## PHP Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=$HOME/progs/bin
