@@ -37,7 +37,7 @@ sudo apt-get -y install acpi gimp inkscape shutter libgoo-canvas-perl sysv-rc-co
 #sudo apt-get install gnome-session-flashback
 
 ## Add the official nodejs repository
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
 ## If we want to make sure we get the very latest PHP stuff, add this PPA.
 #sudo apt-add-repository -y ppa:ondrej/php5
