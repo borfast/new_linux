@@ -42,6 +42,9 @@ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 ## If we want to make sure we get the very latest PHP stuff, add this PPA.
 #sudo apt-add-repository -y ppa:ondrej/php5
 
+# Get the latest git.
+sudo add-apt-repository ppa:git-core/ppa
+
 ## Development shit
 sudo apt-get -y install build-essential python-setuptools python-dev python3-all-dev apache2 nodejs php php-pear php-cli php-json php-mysql php-pgsql php-sqlite3 php-dev php-mongodb php-xdebug php-curl php-gd php-mcrypt git git-flow gitg openjdk-8-jdk terminator meld mysql-client mysql-server postgresql postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev redis-server redis-tools
 sudo a2enmod ssl rewrite
@@ -91,7 +94,9 @@ echo "eval \"\$(pyenv virtualenv-init -)\"" >> .bashrc
 sudo pip install -U fabric fexpect
 
 ## Git up
-sudo gem install git-up
+# The packages is discontinued because git 2.9+ can replicate its features.
+#sudo gem install git-up
+git config --global alias.up 'pull --rebase --autostash'
 
 ## Git flow completion
 sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
