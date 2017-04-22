@@ -33,14 +33,11 @@ sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install acpi gimp inkscape shutter libgoo-canvas-perl sysv-rc-conf vim unace unace-nonfree unrar p7zip-full curl whois synaptic python-software-properties openjdk-8-jre openjdk-8-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter vlc gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop
 
-## Only for Ubuntu; Linux Mint doesn't need hacks to have a decent desktop environment.
-#sudo apt-get install gnome-session-flashback
-
 ## Add the official nodejs repository
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 
 ## If we want to make sure we get the very latest PHP stuff, add this PPA.
-#sudo apt-add-repository -y ppa:ondrej/php5
+sudo apt-add-repository -y ppa:ondrej/php
 
 # Get the latest git.
 sudo add-apt-repository ppa:git-core/ppa
@@ -94,12 +91,7 @@ echo "eval \"\$(pyenv virtualenv-init -)\"" >> .bashrc
 sudo pip install -U fabric fexpect
 
 ## Git up
-# The packages is discontinued because git 2.9+ can replicate its features.
-#sudo gem install git-up
 git config --global alias.up 'pull --rebase --autostash'
-
-## Git flow completion
-sudo curl -o /etc/bash_completion.d/git-flow-completion.bash https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash
 
 ## Liquidprompt (https://github.com/nojhan/liquidprompt)
 pushd $HOME
@@ -136,10 +128,10 @@ then
 else
     ROBOMONGO_ARCH='i386'
 fi
-curl -o ./robomongo.tar.gz https://download.robomongo.org/0.9.0-rc9/linux/robomongo-0.9.0-rc9-linux-${ROBOMONGO_ARCH}-0bb5668.tar.gz &&
+curl -o ./robomongo.tar.gz https://download.robomongo.org/1.0.0/linux/robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea.tar.gz &&
 tar xfz robomongo.tar.gz &&
-mv robomongo-0.9.0-rc9-linux-${ROBOMONGO_ARCH}-0bb5668 $HOME/progs/
-rm -rf ./robomongo-0.9.0-rc9-linux-${ROBOMONGO_ARCH}-0bb5668.tar.gz
+mv robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea $HOME/progs/
+rm -rf ./robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea.tar.gz
 
 
 ## Clean up
