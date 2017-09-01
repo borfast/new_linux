@@ -94,14 +94,23 @@ sudo pip install -U fabric fexpect
 git config --global alias.up 'pull --rebase --autostash'
 
 ## Liquidprompt (https://github.com/nojhan/liquidprompt)
-pushd $HOME
-git clone https://github.com/nojhan/liquidprompt.git
-echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
-echo "[[ \$- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
-popd
+#pushd $HOME
+#git clone https://github.com/nojhan/liquidprompt.git
+#echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
+#echo "[[ \$- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
+#popd
+
+## Powerline (https://github.com/powerline/powerline)
+sudo apt-get install powerline fonts-powerline python-powerline python3-powerline python-pygit2 python3-pygit2
+echo "# Powerline" >> .bashrc
+echo "powerline-daemon -q" >> .bashrc
+echo "POWERLINE_BASH_CONTINUATION=1" >> .bashrc
+echo "POWERLINE_BASH_SELECT=1" >> .bashrc
+echo ". /usr/share/powerline/bindings/bash/powerline.sh" >> .bashrc
+
 
 ## MailHog - https://github.com/mailhog/MailHog/
-curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v0.1.8/MailHog_linux_amd64
+curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
 chmod u+x $HOME/progs/bin/mailhog
 
 
