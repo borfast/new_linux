@@ -43,7 +43,7 @@ sudo apt-add-repository -y ppa:ondrej/php
 sudo add-apt-repository ppa:git-core/ppa
 
 ## Development shit
-sudo apt-get -y install build-essential python-setuptools python-dev python3-all-dev apache2 nodejs php php-pear php-cli php-json php-mysql php-pgsql php-sqlite3 php-dev php-mongodb php-xdebug php-curl php-gd php-mcrypt git git-flow gitg openjdk-8-jdk terminator meld mysql-client mysql-server postgresql postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev redis-server redis-tools
+sudo apt-get -y install make build-essential python-setuptools python-dev python3-all-dev apache2 nodejs php php-pear php-cli php-json php-mysql php-pgsql php-sqlite3 php-dev php-mongodb php-xdebug php-curl php-gd php-mcrypt git git-flow gitg openjdk-8-jdk terminator meld mysql-client mysql-server postgresql postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev redis-server redis-tools
 sudo a2enmod ssl rewrite
 sudo php7enmod mcrypt
 sudo service apache2 restart
@@ -74,40 +74,98 @@ sudo easy_install pip
 ## Python PEP 8
 sudo pip install -U pep8
 
-## Virtualenvwrapper and friends
+## Virtualenvwrapper
 sudo pip install -U virtualenvwrapper
-echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
-echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+cat >> .bashrc << EOF
+
+# Virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+EOF
 
 ## pyenv
-sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils
+sudo apt-get install -y libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-echo "export PATH=\"/home/borfast/.pyenv/bin:\$PATH\"" >> .bashrc
-echo "eval \"\$(pyenv init -)\"" >> .bashrc
-echo "eval \"\$(pyenv virtualenv-init -)\"" >> .bashrc
+cat >> .bashrc << EOF
 
+export PATH="/home/borfast/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
-## Fabric
-sudo pip install -U fabric fexpect
+EOF
 
 ## Git up
 git config --global alias.up 'pull --rebase --autostash'
 
-## Liquidprompt (https://github.com/nojhan/liquidprompt)
-#pushd $HOME
-#git clone https://github.com/nojhan/liquidprompt.git
-#echo "# Only load Liquid Prompt in interactive shells, not from a script or from scp" >> .bashrc
-#echo "[[ \$- = *i* ]] && source ~/liquidprompt/liquidprompt" >> .bashrc
-#popd
-
 ## Powerline (https://github.com/powerline/powerline)
 sudo apt-get install powerline fonts-powerline python-powerline python3-powerline python-pygit2 python3-pygit2
-echo "# Powerline" >> .bashrc
-echo "powerline-daemon -q" >> .bashrc
-echo "POWERLINE_BASH_CONTINUATION=1" >> .bashrc
-echo "POWERLINE_BASH_SELECT=1" >> .bashrc
-echo ". /usr/share/powerline/bindings/bash/powerline.sh" >> .bashrc
+cat >> .bashrc << EOF
 
+# Powerline
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+. /usr/share/powerline/bindings/bash/powerline.sh
+EOF
+
+mkdir -p $HOME/.config/powerline/themes
+cat > $HOME/.config/powerline/config.json << EOF
+{
+    "ext": {
+        "shell": {
+            "theme": "default_leftonly"
+        }
+    }
+}
+EOF
+
+# Write Powerline shell theme configuration to change the default segments order
+cat > $HOME/.config/powerline/themes/shell/default_leftonly.json << EOF
+{
+	"segments": {
+		"left": [
+			{
+				"function": "powerline.segments.common.net.hostname",
+				"priority": 10
+			},
+			{
+				"function": "powerline.segments.common.env.user",
+				"priority": 30
+			},
+			{
+				"function": "powerline.segments.shell.cwd",
+				"priority": 10
+			},
+			{
+				"function": "powerline.segments.common.env.virtualenv",
+				"priority": 50
+			},
+			{
+				"function": "powerline.segments.common.vcs.branch",
+				"priority": 40
+			},
+			{
+				"function": "powerline.segments.shell.jobnum",
+				"priority": 20
+			},
+			{
+				"function": "powerline.segments.shell.last_status",
+				"priority": 10
+			}
+		]
+	},
+	"segment_data": {
+		"powerline.segments.common.vcs.branch": {
+			"args": {
+				"status_colors": true,
+				"ignore_statuses": ["U"]
+			}
+
+		}
+	}
+}
+EOF
 
 ## MailHog - https://github.com/mailhog/MailHog/
 curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
@@ -130,17 +188,16 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
 sudo apt-get -y install oracle-java8-installer
 
-## RoboMongo
+## Studio 3T (for Mongodb)
 if [ $ARCH == 64 ]
 then
-    ROBOMONGO_ARCH='x86_64'
+    MONGO_ARCH='x64'
 else
-    ROBOMONGO_ARCH='i386'
+    MONGO_ARCH='x86'
 fi
-curl -o ./robomongo.tar.gz https://download.robomongo.org/1.0.0/linux/robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea.tar.gz &&
-tar xfz robomongo.tar.gz &&
-mv robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea $HOME/progs/
-rm -rf ./robomongo-1.0.0-linux-${ROBOMONGO_ARCH}-89f24ea.tar.gz
+curl -o ./studio3t.tar.gz https://download.studio3t.com/studio-3t/linux/5.5.0/studio-3t-linux-${MONGO_ARCH}.tar.gz &&
+tar -C $HOME/progs/ -xfz studio3t.tar.gz
+rm -rf ./studio3t.tar.gz
 
 
 ## Clean up
