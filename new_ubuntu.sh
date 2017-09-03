@@ -34,7 +34,7 @@ sudo apt-get -y upgrade
 sudo apt-get -y install acpi gimp inkscape shutter libgoo-canvas-perl sysv-rc-conf vim unace unace-nonfree unrar p7zip-full curl whois synaptic python-software-properties openjdk-8-jre openjdk-8-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter vlc gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop
 
 ## Add the official nodejs repository
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
 ## If we want to make sure we get the very latest PHP stuff, add this PPA.
 sudo apt-add-repository -y ppa:ondrej/php
@@ -109,7 +109,7 @@ POWERLINE_BASH_SELECT=1
 . /usr/share/powerline/bindings/bash/powerline.sh
 EOF
 
-mkdir -p $HOME/.config/powerline/themes
+mkdir -p $HOME/.config/powerline/themes/shell
 cat > $HOME/.config/powerline/config.json << EOF
 {
     "ext": {
