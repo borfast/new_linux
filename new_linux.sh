@@ -62,7 +62,7 @@ git config --global commit.gpgSign true
 ##########
 # Python #
 ##########
-sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python3-pip python3-setuptools python3-wheel python3-all-dev
+sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python3-pip python3-setuptools python3-wheel python3-all-dev libffi-dev
 pip3 install --user -U pipenv
 
 sudo apt-get install -y libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev  llvm libncurses5-dev libncursesw5-dev xz-utils
