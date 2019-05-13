@@ -6,8 +6,6 @@
 ## necessary repositories beforehand but this way the script is more
 ## modular and I can comment out any sections if I want to.
 
-## TODO: Rewrite this with Salt/Ansible?
-
 
 # Create the user bin folder and add it to the PATH
 mkdir -p $HOME/progs/bin
@@ -114,7 +112,7 @@ rm -rf ./studio3t.tar.gz
 #######################################################
 sudo apt-get install fonts-powerline zsh zsh-theme-powerlevel9k
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel9k\/powerlevel9k"/' $HOME/.zshrc
+echo "source /usr/share/powerlevel9k/powerlevel9k.zsh-theme" >> $HOME/.zshrc
 
 
 ## Clean up
