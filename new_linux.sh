@@ -6,6 +6,8 @@
 ## necessary repositories beforehand but this way the script is more
 ## modular and I can comment out any sections if I want to.
 
+## TODO: Rewrite this with Salt/Ansible?
+
 
 # Create the user bin folder and add it to the PATH
 mkdir -p $HOME/progs/bin
@@ -53,7 +55,6 @@ sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt-get install git
 git config --global alias.up 'pull --rebase --autostash'
 git config --global user.signingkey #######
-git config --global gpg.program /usr/bin/gpg2
 git config --global commit.gpgSign true
 
 
