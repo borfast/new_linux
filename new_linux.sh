@@ -102,7 +102,7 @@ chmod u+x $HOME/progs/bin/mailhog
 ###########################
 # Studio 3T (for Mongodb) #
 ###########################
-curl -o ./studio3t.tar.gz https://download.studio3t.com/studio-3t/linux/2019.2.1/studio-3t-linux-x64.tar.gz &&
+curl -o ./studio3t.tar.gz https://download.studio3t.com/studio-3t/linux/2019.6.1/studio-3t-linux-x64.tar.gz &&
 tar -C $HOME/progs/ -xzf studio3t.tar.gz
 rm -rf ./studio3t.tar.gz
 
