@@ -8,6 +8,8 @@
 
 ## TODO: Rewrite this with Salt/Ansible?
 
+UBUNTU_CODENAME=bionic
+
 
 # Create the user bin folder and add it to the PATH
 mkdir -p $HOME/progs/bin
@@ -74,6 +76,16 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 EOF
+
+
+#######################################################################################################################
+# Docker - as instructed at https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community #
+#######################################################################################################################
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable"
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 
 ########
