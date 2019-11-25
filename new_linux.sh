@@ -65,7 +65,8 @@ git config --global commit.gpgSign true
 # Python #
 ##########
 sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python3-pip python3-setuptools python3-wheel python3-all-dev libffi-dev
-pip3 install --user -U pipenv
+python3 -m pip install --user -U pipenv pipx
+python3 -m pipx ensurepath
 
 sudo apt-get install -y libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev  llvm libncurses5-dev libncursesw5-dev xz-utils
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
