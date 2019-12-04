@@ -28,13 +28,18 @@ sudo add-apt-repository -y ppa:inkscape.dev/stable
 sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install qbittorrent acpi gimp inkscape shutter vim unace unace-nonfree unrar p7zip-full curl wget whois synaptic python-software-properties openjdk-11-jre openjdk-11-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop apt-transport-https mesa-vulkan-drivers vdpau-va-driver vdpauinfo nethogs vokoscreen
+sudo apt-get -y install snapd qbittorrent acpi gimp inkscape shutter vim unace unace-nonfree unrar p7zip-full curl wget whois synaptic python-software-properties openjdk-11-jre openjdk-11-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop apt-transport-https mesa-vulkan-drivers vdpau-va-driver vdpauinfo nethogs vokoscreen
 
 ############################
 # libdvdcss and latest VLC #
 ############################
 sudo apt-get -y install libdvd-pkg vlc
 sudo dpkg-reconfigure libdvd-pkg
+
+##############################
+# Hugo static site generator #
+##############################
+snap install hugo --channel=extended
 
 
 #################
