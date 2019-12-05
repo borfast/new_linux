@@ -61,7 +61,7 @@ sudo apt-get -y install make build-essential git gitg git-cola openjdk-11-jdk te
 echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $UBUNTU_CODENAME contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install virtualbox-6.0 virtualbox-guest-x11 virtualbox-ext-pack virtualbox-guest-additions-iso
+sudo apt-get install -y virtualbox-6.0 virtualbox-guest-x11 virtualbox-ext-pack virtualbox-guest-additions-iso
 
 
 #######
