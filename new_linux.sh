@@ -28,7 +28,7 @@ sudo add-apt-repository -y ppa:inkscape.dev/stable
 sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install snapd qbittorrent acpi gimp inkscape shutter vim unace unace-nonfree unrar p7zip-full curl wget whois synaptic python-software-properties openjdk-11-jre openjdk-11-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop apt-transport-https mesa-vulkan-drivers vdpau-va-driver vdpauinfo nethogs vokoscreen
+sudo apt-get -y install ca-certificates gnupg-agent software-properties-common snapd qbittorrent acpi gimp inkscape shutter vim unace unace-nonfree unrar p7zip-full curl wget whois synaptic python-software-properties openjdk-11-jre openjdk-11-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop apt-transport-https mesa-vulkan-drivers vdpau-va-driver vdpauinfo nethogs vokoscreen
 
 ############################
 # libdvdcss and latest VLC #
@@ -55,6 +55,13 @@ rm -f google-chrome-stable_current_amd64.deb
 ####################
 sudo apt-get -y install make build-essential git gitg git-cola openjdk-11-jdk terminator meld mysql-client postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev redis-tools
 
+##############
+# Virtualbox #
+##############
+echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $UBUNTU_CODENAME contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install virtualbox-6.0
 
 #######
 # Git #
@@ -88,9 +95,8 @@ EOF
 #######################################################################################################################
 # Docker - as instructed at https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community #
 #######################################################################################################################
-sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable"
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
