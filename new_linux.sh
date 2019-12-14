@@ -83,7 +83,7 @@ git config --global commit.gpgSign true
 ##########
 # Python #
 ##########
-sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python3-pip python3-setuptools python3-wheel python3-all-dev libffi-dev
+sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python-venv python3-pip python3-setuptools python3-wheel python3-all-dev python3-venv libffi-dev
 python3 -m pip install --user -U pipenv pipx
 python3 -m pipx ensurepath
 
