@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Assuming Linux Mint 19. Should also mostly work with Ubuntu 18.04
+## Assuming Linux Mint 20. Should also mostly work with Ubuntu 20.04
 
 ## Installing .deb packages could be done in a single go if I added the
 ## necessary repositories beforehand but this way the script is more
@@ -8,7 +8,7 @@
 
 ## TODO: Rewrite this with Salt/Ansible?
 
-UBUNTU_CODENAME=bionic
+UBUNTU_CODENAME=focal
 
 
 # Create the user bin folder and add it to the PATH
@@ -21,39 +21,181 @@ mkdir $HOME/new_ubuntu_temp_and_a_random_string
 pushd $HOME/new_ubuntu_temp_and_a_random_string
 
 
-###################
-# Common software #
-###################
-sudo add-apt-repository -y ppa:inkscape.dev/stable
-sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
+####################
+# PPAs to be added #
+####################
+PPAS=(
+	ppa:inkscape.dev/stable
+	ppa:qbittorrent-team/qbittorrent-stable
+	ppa:git-core/ppa
+)
+
+# Add the PPAs listed before
+for ppa in ${PPAS[*]}
+do
+	sudo add-apt-repository -y $ppa
+done
+
+
+#################################
+# Packages by category, just to #
+# make it easier to find stuff. #
+#################################
+
+DEVELOPMENT=(
+	build-essential
+	git
+	gitg
+	git-cola
+	libbz2-dev
+	libffi-dev
+	libmysqlclient-dev
+	libncurses-dev
+	libsqlite3-dev
+	libpq-dev
+	libreadline-dev
+	libsqlite3-dev
+	libssl-dev
+	llvm
+	make
+	meld
+	mysql-client
+	openjdk-11-jdk
+	openjdk-11-jre
+	openjdk-11-jre-headless
+	postgresql-client
+	postgresql-contrib
+	pgadmin3
+	python-pip-whl
+	python3-setuptools
+	python3-wheel
+	python3-all-dev
+	python3-venv
+	python3-pip
+	redis-tools
+	ruby
+	ruby-dev
+	xz-utils
+	zlib1g-dev
+)
+
+GRAPHICS=(
+	gimp
+	inkscape
+	flameshot
+)
+
+INTERNET=(
+	qbittorrent
+)
+
+MULTIMEDIA=(
+	gstreamer1.0-plugins-base
+	gstreamer1.0-plugins-good
+	gstreamer1.0-plugins-ugly
+	gstreamer1.0-plugins-bad
+	libavcodec-extra
+	libdvd-pkg
+	ubuntu-restricted-extras
+	vlc
+	vokoscreen
+)
+
+SECURITY=(
+	clamav
+	clamav-freshclam
+	chkrootkit
+	rkhunter
+)
+
+SYSTEM=(
+	acpi
+	apt-transport-https
+	bash-completion
+	ca-certificates
+	gnupg-agent
+	mesa-vulkan-drivers
+	mesa-va-drivers
+	mintsources
+	python3-software-properties
+	snapd
+	ttf-mscorefonts-installer
+	vdpauinfo
+)
+
+UTILS=(
+	compizconfig-settings-manager
+	curl
+	gparted
+	htop
+	nethogs
+	p7zip-full
+	synaptic
+	terminator
+	unace
+	unace-nonfree
+	unrar
+	vim
+	wget
+	whois
+)
+
+# Merge all the package groups together
+PACKAGES=(
+	"${DEVELOPMENT[@]}"
+	"${GRAPHICS[@]}"
+	"${INTERNET[@]}"
+	"${MULTIMEDIA[@]}"
+	"${SECURITY[@]}"
+	"${SYSTEM[@]}"
+	"${UTILS[@]}"
+)
+
+
+
+# Update and upgrade all the things.
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install ca-certificates gnupg-agent software-properties-common snapd qbittorrent acpi gimp inkscape shutter vim unace unace-nonfree unrar p7zip-full curl wget whois synaptic python-software-properties openjdk-11-jre openjdk-11-jre-headless gparted compizconfig-settings-manager clamav-freshclam clamav chkrootkit rkhunter gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad libavcodec-extra ubuntu-restricted-extras bash-completion ttf-mscorefonts-installer htop apt-transport-https mesa-vulkan-drivers vdpau-va-driver vdpauinfo nethogs vokoscreen
 
-############################
-# libdvdcss and latest VLC #
-############################
-sudo apt-get -y install libdvd-pkg vlc
+# Install all the packages
+sudo apt-get -y install "${PACKAGES[@]}"
+
+
+
+#########################################
+# From here on we install and configure #
+# stuff # that requires special steps.  #
+#########################################
+
+
+
+#########################
+# libdvd-pkg needs this #
+#########################
 sudo dpkg-reconfigure libdvd-pkg
 
 ##############################
 # Hugo static site generator #
 ##############################
-snap install hugo --channel=extended
+curl -L -O https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb &&
+sudo dpkg -i hugo_0.74.3_Linux-64bit.deb &&
+rm -f hugo_0.74.3_Linux-64bit.deb
+
+###########
+# DBeaver #
+###########
+curl -L -O https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb &&
+sudo dpkg -i dbeaver-ce_latest_amd64.deb &&
+rm -f dbeaver-ce_latest_amd64.deb
 
 
 #################
 # Google Chrome #
 #################
-curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+curl -L -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
 sudo dpkg -i google-chrome-stable_current_amd64.deb &&
 rm -f google-chrome-stable_current_amd64.deb
 
-
-####################
-# Development shit #
-####################
-sudo apt-get -y install make build-essential git gitg git-cola openjdk-11-jdk terminator meld mysql-client postgresql-client postgresql-contrib pgadmin3 ruby ruby-dev mysql-workbench libsqlite3-dev libmysqlclient-dev libpq-dev redis-tools
 
 ##############
 # Virtualbox #
@@ -61,33 +203,29 @@ sudo apt-get -y install make build-essential git gitg git-cola openjdk-11-jdk te
 echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $UBUNTU_CODENAME contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install -y virtualbox-6.0 virtualbox-guest-x11
+sudo apt-get install -y virtualbox-6.1 virtualbox-guest-x11
 
-curl -O https://download.virtualbox.org/virtualbox/6.0.14/Oracle_VM_VirtualBox_Extension_Pack-6.0.14.vbox-extpack
-VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-6.0.14.vbox-extpack
+curl -L -O https://download.virtualbox.org/virtualbox/6.1.12/Oracle_VM_VirtualBox_Extension_Pack-6.1.12.vbox-extpack
+VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-6.1.12.vbox-extpack
 
-curl -O https://download.virtualbox.org/virtualbox/6.0.14/VBoxGuestAdditions_6.0.14.iso
+curl -L -O https://download.virtualbox.org/virtualbox/6.1.12/VBoxGuestAdditions_6.1.12.iso
 
 
 #######
 # Git #
 #######
-sudo add-apt-repository -y ppa:git-core/ppa
-sudo apt-get install git
 git config --global alias.up 'pull --rebase --autostash'
 git config --global user.signingkey #######
 git config --global commit.gpgSign true
 
 
 
-##########
-# Python #
-##########
-sudo apt-get install -y python-pip python-setuptools python-wheel python-all-dev python-venv python3-pip python3-setuptools python3-wheel python3-all-dev python3-venv libffi-dev
+################
+# Python stuff #
+################
 python3 -m pip install --user -U pipenv pipx
 python3 -m pipx ensurepath
 
-sudo apt-get install -y libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev  llvm libncurses5-dev libncursesw5-dev xz-utils
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 cat >> .zshrc << EOF
 
@@ -107,10 +245,10 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 
-########
-# Node #
-########
-curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+#######################
+# Node, pnpm and yarn #
+#######################
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 sudo npm add -g pnpm
@@ -129,14 +267,14 @@ echo "export PATH=\"$(yarn global bin):\$PATH\"" >> .zshrc
 #################################################
 # MailHog - https://github.com/mailhog/MailHog/ #
 #################################################
-curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
+curl -L -o $HOME/progs/bin/mailhog https://github.com/mailhog/MailHog/releases/download/v1.0.1/MailHog_linux_amd64
 chmod u+x $HOME/progs/bin/mailhog
 
 
 ###########################
 # Studio 3T (for Mongodb) #
 ###########################
-curl -o ./studio3t.tar.gz https://download.studio3t.com/studio-3t/linux/2019.6.1/studio-3t-linux-x64.tar.gz &&
+curl -o ./studio3t.tar.gz https://download.studio3t.com/studio-3t/linux/2020.7.1/studio-3t-linux-x64.tar.gz &&
 tar -C $HOME/progs/ -xzf studio3t.tar.gz
 rm -rf ./studio3t.tar.gz
 
