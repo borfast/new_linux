@@ -61,8 +61,9 @@ DEVELOPMENT=(
 	meld
 	mysql-client
 	openjdk-11-jdk
-	openjdk-11-jre
-	openjdk-11-jre-headless
+	openjdk-11-source
+	openjdk-14-jdk
+	openjdk-14-source
 	postgresql-client
 	postgresql-contrib
 	pgadmin3
