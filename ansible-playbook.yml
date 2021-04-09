@@ -1,0 +1,65 @@
+- name: Set up a new Linux Mint or Ubuntu system.
+  hosts: localhost
+  connection: local
+
+  vars:
+    HOMEDIR: "{{ ansible_env.HOME }}"
+    BINDIR: "{{ HOMEDIR }}/bin"
+    PROGSDIR: "{{ HOMEDIR }}/progs"
+    PPAS:
+      - ppa:inkscape.dev/stable
+      - ppa:qbittorrent-team/qbittorrent-stable
+      - ppa:git-core/ppa
+
+  tasks:
+
+  - name: Create $HOME/bin if it does not exist
+    ansible.builtin.file:
+      path: "{{ BINDIR }}"
+      state: directory
+
+  - name: Add $HOME/bin to $PATH.
+    ansible.builtin.lineinfile:
+      path: "{{ HOMEDIR }}/.pam_environment"
+      line: "PATH DEFAULT=${PATH}:{{ BINDIR }}"
+
+  - name: Add extra APT repositories
+    ansible.builtin.apt_repository:
+      repo: "{{ item }}"
+      codename: "focal"
+      state: present
+      update_cache: no
+    loop: "{{ PPAS }}"
+    become: yes
+
+  - name: Include list of packages
+    ansible.builtin.include_vars:
+      file: packages.yml
+      name: package-list
+
+  - name: Install packages
+    ansible.builtin.apt:
+      name: "{{ package-list.packages }}"
+      state: latest
+      update_cache: yes
+    become: yes
+
+  - name: Update all packages to their latest version
+    apt:
+      name: "*"
+      state: latest
+
+  #########################################
+  # From here on we install and configure #
+  # stuff # that requires special steps.  #
+  #########################################
+
+  - name: libdvd-pkg needs dpkg-reconfigure
+    command:
+      cmd: dpkg-reconfigure -f libdvd-pkg
+
+
+
+  # - name: Remove packages not needed anymore
+  #   apt:
+  #     autoremove: yes

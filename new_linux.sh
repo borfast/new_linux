@@ -10,11 +10,21 @@
 
 UBUNTU_CODENAME=focal
 
+# Install Ansible, so we can use it for everything
+sudo apt update
+sudo apt install -y software-properties-common
+sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt update
+sudo apt install ansible -y
+
+# When the Ansible code is ready, run it with:
+# ansible-playbook ansible-playbook.yml --ask-become-pass
 
 # Create the user bin folder and add it to the PATH
-mkdir -p $HOME/progs/bin
-echo "PATH DEFAULT=${PATH}:${HOME}/progs/bin" >> $HOME/.pam_environment
-export PATH="$PATH:$HOME/progs/bin"
+# mkdir -p $HOME/progs/bin
+# echo "PATH DEFAULT=${PATH}:${HOME}/progs/bin" >> $HOME/.pam_environment
+# export PATH="$PATH:$HOME/progs/bin"
+
 
 # Let's work in a temporary directory that is destroyed at the end of the script
 mkdir $HOME/new_ubuntu_temp_and_a_random_string
@@ -24,17 +34,17 @@ pushd $HOME/new_ubuntu_temp_and_a_random_string
 ####################
 # PPAs to be added #
 ####################
-PPAS=(
-	ppa:inkscape.dev/stable
-	ppa:qbittorrent-team/qbittorrent-stable
-	ppa:git-core/ppa
-)
+# PPAS=(
+# 	ppa:inkscape.dev/stable
+# 	ppa:qbittorrent-team/qbittorrent-stable
+# 	ppa:git-core/ppa
+# )
 
-# Add the PPAs listed before
-for ppa in ${PPAS[*]}
-do
-	sudo add-apt-repository -y $ppa
-done
+# # Add the PPAs listed before
+# for ppa in ${PPAS[*]}
+# do
+# 	sudo add-apt-repository -y $ppa
+# done
 
 
 #################################
@@ -42,124 +52,124 @@ done
 # make it easier to find stuff. #
 #################################
 
-DEVELOPMENT=(
-	build-essential
-	git
-	gitg
-	git-cola
-	libbz2-dev
-	libffi-dev
-	libmysqlclient-dev
-	libncurses-dev
-	libsqlite3-dev
-	libpq-dev
-	libreadline-dev
-	libsqlite3-dev
-	libssl-dev
-	llvm
-	make
-	meld
-	mysql-client
-	openjdk-11-jdk
-	openjdk-11-source
-	openjdk-14-jdk
-	openjdk-14-source
-	postgresql-client
-	postgresql-contrib
-	pgadmin3
-	python-pip-whl
-	python3-setuptools
-	python3-wheel
-	python3-all-dev
-	python3-venv
-	python3-pip
-	redis-tools
-	ruby
-	ruby-dev
-	xz-utils
-	zlib1g-dev
-)
+# DEVELOPMENT=(
+# 	build-essential
+# 	git
+# 	gitg
+# 	git-cola
+# 	libbz2-dev
+# 	libffi-dev
+# 	libmysqlclient-dev
+# 	libncurses-dev
+# 	libsqlite3-dev
+# 	libpq-dev
+# 	libreadline-dev
+# 	libsqlite3-dev
+# 	libssl-dev
+# 	llvm
+# 	make
+# 	meld
+# 	mysql-client
+# 	openjdk-11-jdk
+# 	openjdk-11-source
+# 	openjdk-14-jdk
+# 	openjdk-14-source
+# 	postgresql-client
+# 	postgresql-contrib
+# 	pgadmin3
+# 	python-pip-whl
+# 	python3-setuptools
+# 	python3-wheel
+# 	python3-all-dev
+# 	python3-venv
+# 	python3-pip
+# 	redis-tools
+# 	ruby
+# 	ruby-dev
+# 	xz-utils
+# 	zlib1g-dev
+# )
 
-GRAPHICS=(
-	gimp
-	inkscape
-	flameshot
-)
+# GRAPHICS=(
+# 	gimp
+# 	inkscape
+# 	flameshot
+# )
 
-INTERNET=(
-	qbittorrent
-)
+# INTERNET=(
+# 	qbittorrent
+# )
 
-MULTIMEDIA=(
-	gstreamer1.0-plugins-base
-	gstreamer1.0-plugins-good
-	gstreamer1.0-plugins-ugly
-	gstreamer1.0-plugins-bad
-	libavcodec-extra
-	libdvd-pkg
-	ubuntu-restricted-extras
-	vlc
-	vokoscreen
-)
+# MULTIMEDIA=(
+# 	gstreamer1.0-plugins-base
+# 	gstreamer1.0-plugins-good
+# 	gstreamer1.0-plugins-ugly
+# 	gstreamer1.0-plugins-bad
+# 	libavcodec-extra
+# 	libdvd-pkg
+# 	ubuntu-restricted-extras
+# 	vlc
+# 	vokoscreen
+# )
 
-SECURITY=(
-	clamav
-	clamav-freshclam
-	chkrootkit
-	rkhunter
-)
+# SECURITY=(
+# 	clamav
+# 	clamav-freshclam
+# 	chkrootkit
+# 	rkhunter
+# )
 
-SYSTEM=(
-	acpi
-	apt-transport-https
-	bash-completion
-	ca-certificates
-	gnupg-agent
-	mesa-vulkan-drivers
-	mesa-va-drivers
-	mintsources
-	python3-software-properties
-	snapd
-	ttf-mscorefonts-installer
-	vdpauinfo
-)
+# SYSTEM=(
+# 	acpi
+# 	apt-transport-https
+# 	bash-completion
+# 	ca-certificates
+# 	gnupg-agent
+# 	mesa-vulkan-drivers
+# 	mesa-va-drivers
+# 	mintsources
+# 	python3-software-properties
+# 	snapd
+# 	ttf-mscorefonts-installer
+# 	vdpauinfo
+# )
 
-UTILS=(
-	compizconfig-settings-manager
-	curl
-	gparted
-	htop
-	nethogs
-	p7zip-full
-	synaptic
-	terminator
-	unace
-	unace-nonfree
-	unrar
-	vim
-	wget
-	whois
-)
+# UTILS=(
+# 	compizconfig-settings-manager
+# 	curl
+# 	gparted
+# 	htop
+# 	nethogs
+# 	p7zip-full
+# 	synaptic
+# 	terminator
+# 	unace
+# 	unace-nonfree
+# 	unrar
+# 	vim
+# 	wget
+# 	whois
+# )
 
 # Merge all the package groups together
-PACKAGES=(
-	"${DEVELOPMENT[@]}"
-	"${GRAPHICS[@]}"
-	"${INTERNET[@]}"
-	"${MULTIMEDIA[@]}"
-	"${SECURITY[@]}"
-	"${SYSTEM[@]}"
-	"${UTILS[@]}"
-)
+# PACKAGES=(
+# 	"${DEVELOPMENT[@]}"
+# 	"${GRAPHICS[@]}"
+# 	"${INTERNET[@]}"
+# 	"${MULTIMEDIA[@]}"
+# 	"${SECURITY[@]}"
+# 	"${SYSTEM[@]}"
+# 	"${UTILS[@]}"
+# )
 
 
 
 # Update and upgrade all the things.
-sudo apt-get update
-sudo apt-get -y upgrade
+# sudo apt-get update
+# sudo apt-get -y upgrade
 
-# Install all the packages
-sudo apt-get -y install "${PACKAGES[@]}"
+# # Install all the packages
+# sudo apt-get -y install "${PACKAGES[@]}"
 
 
 
@@ -173,12 +183,18 @@ sudo apt-get -y install "${PACKAGES[@]}"
 #########################
 # libdvd-pkg needs this #
 #########################
-sudo dpkg-reconfigure libdvd-pkg
+# sudo dpkg-reconfigure libdvd-pkg
 
 ##############################
 # Hugo static site generator #
 ##############################
+LATEST_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
+| grep "tag_name" \
+| awk '{print "https://github.com/gohugoio/hugo/archive/" substr($2, 2, length($2)-3) "Linux-64bit.deb"}')
 curl -L -O https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb &&
+
+# Or even better, using Github's API and jq to get the latest version URL:
+# curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq '.assets[].browser_download_url | select(endswith("Linux-64bit.deb")) | select(contains("extended"))'
 sudo dpkg -i hugo_0.74.3_Linux-64bit.deb &&
 rm -f hugo_0.74.3_Linux-64bit.deb
 
