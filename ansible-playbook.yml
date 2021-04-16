@@ -58,7 +58,16 @@
     command:
       cmd: dpkg-reconfigure -f libdvd-pkg
 
-
+  ##############################
+  # Hugo static site generator #
+  ##############################
+  - name: Get the URL for the latest version of Hugo from Github
+    shell: |
+      curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
+      | jq '.assets[].browser_download_url \
+      | select(endswith("Linux-64bit.deb")) \
+      | select(contains("extended")) \
+      | {url: ., filename: split("/")[-1]}'
 
   # - name: Remove packages not needed anymore
   #   apt:
