@@ -16,9 +16,14 @@ sudo apt install -y software-properties-common
 sudo apt-add-repository -y ppa:ansible/ansible
 sudo apt update
 sudo apt install ansible -y
-
+ansible-galaxy collection install community.general
 # When the Ansible code is ready, run it with:
 # ansible-playbook ansible-playbook.yml --ask-become-pass
+
+
+
+
+
 
 # Create the user bin folder and add it to the PATH
 # mkdir -p $HOME/progs/bin
@@ -188,22 +193,22 @@ pushd $HOME/new_ubuntu_temp_and_a_random_string
 ##############################
 # Hugo static site generator #
 ##############################
-LATEST_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
-| grep "tag_name" \
-| awk '{print "https://github.com/gohugoio/hugo/archive/" substr($2, 2, length($2)-3) "Linux-64bit.deb"}')
-curl -L -O https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb &&
+# LATEST_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
+# | grep "tag_name" \
+# | awk '{print "https://github.com/gohugoio/hugo/archive/" substr($2, 2, length($2)-3) "Linux-64bit.deb"}')
+# curl -L -O https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb &&
 
 # Or even better, using Github's API and jq to get the latest version URL:
 # curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq '.assets[].browser_download_url | select(endswith("Linux-64bit.deb")) | select(contains("extended")) | {url: ., filename: split("/")[-1]}'
-sudo dpkg -i hugo_0.74.3_Linux-64bit.deb &&
-rm -f hugo_0.74.3_Linux-64bit.deb
+# sudo dpkg -i hugo_0.74.3_Linux-64bit.deb &&
+# rm -f hugo_0.74.3_Linux-64bit.deb
 
 ###########
 # DBeaver #
 ###########
-curl -L -O https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb &&
-sudo dpkg -i dbeaver-ce_latest_amd64.deb &&
-rm -f dbeaver-ce_latest_amd64.deb
+# curl -L -O https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb &&
+# sudo dpkg -i dbeaver-ce_latest_amd64.deb &&
+# rm -f dbeaver-ce_latest_amd64.deb
 
 
 #################
