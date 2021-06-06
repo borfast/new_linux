@@ -10,6 +10,7 @@
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
+    TEMPDIR: ./temp
 
   tasks:
 
@@ -55,6 +56,11 @@
   # stuff # that requires special steps.  #
   #########################################
 
+  - name: Create temporary directory to store downloaded files
+    file:
+      path: "{{ TEMPDIR }}"
+      state: directory
+
   - name: libdvd-pkg needs dpkg-reconfigure
     command:
       cmd: dpkg-reconfigure -f noninteractive libdvd-pkg
@@ -76,12 +82,14 @@
   - name: Download the latest version of Hugo to a temporary file
     get_url:
       url: "{{ (hugo_version.stdout | from_json).url }}"
-      dest: "./tmp-{{ (hugo_version.stdout | from_json).filename }}"
+      dest: "{{ TEMPDIR }}/{{ (hugo_version.stdout | from_json).filename }}"
 
   - name: Install the latest version of Hugo from the temporary file
     apt:
-      deb: "./tmp-{{ (hugo_version.stdout | from_json).filename }}"
+      deb: "{{ TEMPDIR }}/{{ (hugo_version.stdout | from_json).filename }}"
     become: yes
+
+
 
   ###################
   # DBeaver flatpak #
@@ -95,3 +103,8 @@
   # - name: Remove packages not needed anymore
   #   apt:
   #     autoremove: yes
+
+  - name: Remove temporary directory to store downloaded files
+    file:
+      path: "{{ TEMPDIR }}"
+      state: absent
