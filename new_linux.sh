@@ -214,9 +214,9 @@ pushd $HOME/new_ubuntu_temp_and_a_random_string
 #################
 # Google Chrome #
 #################
-curl -L -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
-sudo dpkg -i google-chrome-stable_current_amd64.deb &&
-rm -f google-chrome-stable_current_amd64.deb
+# curl -L -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&
+# sudo dpkg -i google-chrome-stable_current_amd64.deb &&
+# rm -f google-chrome-stable_current_amd64.deb
 
 
 ##############

@@ -99,10 +99,19 @@
       name: io.dbeaver.DBeaverCommunity
       state: present
 
+  #########################
+  # Install Google Chrome #
+  #########################
+  - name: Install Google Chrome
+    apt:
+      deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    become: yes
 
-  # - name: Remove packages not needed anymore
-  #   apt:
-  #     autoremove: yes
+
+  - name: Remove packages not needed anymore
+    apt:
+      autoremove: yes
+    become: yes
 
   - name: Remove temporary directory to store downloaded files
     file:

@@ -90,6 +90,7 @@ packages:
   - vim
   - wget
   - whois
+  - xz-utils
 
   # STUFF
   - qbittorrent
