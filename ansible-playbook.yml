@@ -40,7 +40,7 @@
   - name: Install packages
     apt:
       name: "{{ package_list.packages }}"
-      state: latest
+      state: present
       update_cache: yes
     become: yes
 
@@ -66,12 +66,22 @@
   - name: Get the URL for the latest version of Hugo from Github
     shell: |
       curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
-      | jq '.assets[].browser_download_url \
-      | select(endswith("Linux-64bit.deb")) \
-      | select(contains("extended")) \
+      | jq '.assets[].browser_download_url
+      | select(endswith("Linux-64bit.deb"))
+      | select(contains("extended"))
       | {url: ., filename: split("/")[-1]}'
     register: hugo_version
-  - debug: msg="{{hugo_version.stdout}}"
+  - debug: msg="{{ hugo_version.stdout }}"
+
+  - name: Download the latest version of Hugo to a temporary file
+    get_url:
+      url: "{{ (hugo_version.stdout | from_json).url }}"
+      dest: "./tmp-{{ (hugo_version.stdout | from_json).filename }}"
+
+  - name: Install the latest version of Hugo from the temporary file
+    apt:
+      deb: "./tmp-{{ (hugo_version.stdout | from_json).filename }}"
+    become: yes
 
   ###################
   # DBeaver flatpak #
