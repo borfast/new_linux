@@ -10,7 +10,7 @@
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
-      - deb http://dl.google.com/linux/chrome/deb/ stable main
+      - deb https://dl.google.com/linux/chrome/deb/ stable main
     TEMPDIR: ./temp
     CODENAME: focal
 
@@ -26,6 +26,8 @@
     lineinfile:
       path: "{{ HOMEDIR }}/.pam_environment"
       line: "PATH DEFAULT=${PATH}:{{ BINDIR }}"
+      create: yes
+
 
   - name: Add extra APT repositories
     apt_repository:
@@ -36,10 +38,16 @@
     loop: "{{ REPOS }}"
     become: yes
 
+  - name: Add Google APT signing key
+    apt_key:
+      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
+
   - name: Update all packages to their latest version
     apt:
       name: "*"
       state: latest
+      update_cache: yes
     become: yes
 
   - name: Include list of packages
