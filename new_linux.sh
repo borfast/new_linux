@@ -255,10 +255,10 @@ ansible-playbook ansible-playbook.yml --ask-become-pass
 #######################################################################################################################
 # Docker - as instructed at https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community #
 #######################################################################################################################
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 
 #######################

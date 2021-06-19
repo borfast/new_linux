@@ -3,6 +3,7 @@
   connection: local
 
   vars:
+    CODENAME: focal
     HOMEDIR: "{{ ansible_env.HOME }}"
     BINDIR: "{{ HOMEDIR }}/bin"
     PROGSDIR: "{{ HOMEDIR }}/progs"
@@ -11,8 +12,9 @@
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
       - deb https://dl.google.com/linux/chrome/deb/ stable main
+      - "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
     TEMPDIR: ./temp
-    CODENAME: focal
+
 
 
   tasks:
@@ -41,6 +43,12 @@
   - name: Add Google APT signing key
     apt_key:
       url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
+    become: yes
+
+  - name: Add Docker APT signing key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
       state: present
     become: yes
 

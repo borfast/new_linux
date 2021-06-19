@@ -1,6 +1,9 @@
 packages:
   # DEVELOPMENT
   - build-essential
+  - containerd.io
+  - docker-ce
+  - docker-ce-cli
   - git
   - gitg
   - git-cola
