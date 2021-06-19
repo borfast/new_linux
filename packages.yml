@@ -71,8 +71,15 @@ packages:
   - mesa-va-drivers
   - mintsources
   - python3-software-properties
+  - qemu-kvm
   - ttf-mscorefonts-installer
   - vdpauinfo
+  - virt-manager
+  - virtualbox
+  - virtualbox-ext-pack
+  - virtualbox-guest-additions-iso
+  - virtualbox-guest-utils
+  - virtualbox-guest-x11
 
   # UTILS
   - compizconfig-settings-manager
@@ -94,3 +101,4 @@ packages:
 
   # STUFF
   - qbittorrent
+  - google-chrome-stable

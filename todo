@@ -1,2 +1,3 @@
 - Download jq, move it to ~/bin and chmod +x
 - Add https://ohmyposh.dev/
+- Add Powerlevel10K

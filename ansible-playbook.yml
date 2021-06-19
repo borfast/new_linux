@@ -6,11 +6,14 @@
     HOMEDIR: "{{ ansible_env.HOME }}"
     BINDIR: "{{ HOMEDIR }}/bin"
     PROGSDIR: "{{ HOMEDIR }}/progs"
-    PPAS:
+    REPOS:
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
+      - deb http://dl.google.com/linux/chrome/deb/ stable main
     TEMPDIR: ./temp
+    CODENAME: focal
+
 
   tasks:
 
@@ -30,7 +33,13 @@
       codename: "focal"
       state: present
       update_cache: no
-    loop: "{{ PPAS }}"
+    loop: "{{ REPOS }}"
+    become: yes
+
+  - name: Update all packages to their latest version
+    apt:
+      name: "*"
+      state: latest
     become: yes
 
   - name: Include list of packages
@@ -43,12 +52,6 @@
       name: "{{ package_list.packages }}"
       state: present
       update_cache: yes
-    become: yes
-
-  - name: Update all packages to their latest version
-    apt:
-      name: "*"
-      state: latest
     become: yes
 
   #########################################
@@ -99,13 +102,8 @@
       name: io.dbeaver.DBeaverCommunity
       state: present
 
-  #########################
-  # Install Google Chrome #
-  #########################
-  - name: Install Google Chrome
-    apt:
-      deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    become: yes
+
+
 
 
   - name: Remove packages not needed anymore
