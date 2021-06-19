@@ -69,6 +69,26 @@
       cmd: dpkg-reconfigure -f noninteractive libdvd-pkg
     become: yes
 
+  ######################
+  # ZShell and friends #
+  ######################
+  - name: Download Oh My Zsh installer
+    get_url:
+      url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+      dest: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
+
+  - name: Install Oh My Zsh
+    script: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
+
+  - name: Add config to .zshrc
+    blockinfile:
+      path: "{{ HOMEDIR }}/.zshrc"
+      block: |
+        export PATH="{{ HOMEDIR }}/.pyenv/bin:$PATH"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+
+
   ##############################
   # Hugo static site generator #
   ##############################
@@ -131,6 +151,14 @@
     pip:
       name: pipx
       extra_args: --user
+
+  - name: Download pyenv installer
+    get_url:
+      url: https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
+      dest: "{{ TEMPDIR }}/pyenv-installer"
+      mode: u+rwx
+  - name: Install pyenv
+    script: "{{ TEMPDIR }}/pyenv-installer"
 
   - name: Download Poetry installer
     get_url:

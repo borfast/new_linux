@@ -82,6 +82,8 @@ packages:
   - virtualbox-guest-additions-iso
   - virtualbox-guest-utils
   - virtualbox-guest-x11
+  - zsh
+  - zsh-syntax-highlighting
 
   # UTILS
   - compizconfig-settings-manager
@@ -104,3 +106,4 @@ packages:
   # STUFF
   - qbittorrent
   - google-chrome-stable
+  - warpinator

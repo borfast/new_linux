@@ -239,17 +239,17 @@ ansible-playbook ansible-playbook.yml --ask-become-pass
 ################
 # Python stuff #
 ################
-python3 -m pip install --user -U pipenv pipx
-python3 -m pipx ensurepath
+# python3 -m pip install --user -U pipenv pipx
+# python3 -m pipx ensurepath
 
-curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-cat >> .zshrc << EOF
+# curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+# cat >> .zshrc << EOF
 
-export PATH="/home/borfast/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# export PATH="/home/borfast/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
-EOF
+# EOF
 
 
 #######################################################################################################################
