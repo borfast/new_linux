@@ -103,6 +103,45 @@
       state: present
 
 
+  #####################
+  # Git configuration #
+  #####################
+  - name: Add git up alias
+    community.general.git_config:
+      name: alias.up
+      scope: global
+      value: pull --rebase --autostash
+
+  - name: Set commit signing key
+    community.general.git_config:
+      name: user.signingkey
+      scope: global
+      value: 56BF26D22EED3B43
+
+  - name: Activate commit signing
+    community.general.git_config:
+      name: commit.gpgSign
+      scope: global
+      value: true
+
+  ################
+  # Python stuff #
+  ################
+  - name: Install pipx
+    pip:
+      name: pipx
+      extra_args: --user
+
+  - name: Download Poetry installer
+    get_url:
+      url: https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+      dest: "{{ TEMPDIR }}/get-poetry.py"
+      mode: u+rwx
+
+  - name: Install Poetry
+    script: "{{ TEMPDIR }}/get-poetry.py"
+
+
 
 
 

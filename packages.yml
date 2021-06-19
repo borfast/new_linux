@@ -66,12 +66,14 @@ packages:
   - bash-completion
   - ca-certificates
   - flatpak
+  - gir1.2-spiceclientgtk-3.0
   - gnupg-agent
   - mesa-vulkan-drivers
   - mesa-va-drivers
   - mintsources
   - python3-software-properties
   - qemu-kvm
+  - qemu-utils
   - ttf-mscorefonts-installer
   - vdpauinfo
   - virt-manager

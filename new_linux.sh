@@ -2,12 +2,6 @@
 
 ## Assuming Linux Mint 20. Should also mostly work with Ubuntu 20.04
 
-## Installing .deb packages could be done in a single go if I added the
-## necessary repositories beforehand but this way the script is more
-## modular and I can comment out any sections if I want to.
-
-## TODO: Rewrite this with Salt/Ansible?
-
 UBUNTU_CODENAME=focal
 
 # Install Ansible, so we can use it for everything
@@ -17,8 +11,8 @@ sudo apt-add-repository -y ppa:ansible/ansible
 sudo apt update
 sudo apt install ansible -y
 ansible-galaxy collection install community.general
-# When the Ansible code is ready, run it with:
-# ansible-playbook ansible-playbook.yml --ask-become-pass
+
+ansible-playbook ansible-playbook.yml --ask-become-pass
 
 
 
@@ -32,8 +26,8 @@ ansible-galaxy collection install community.general
 
 
 # Let's work in a temporary directory that is destroyed at the end of the script
-mkdir $HOME/new_ubuntu_temp_and_a_random_string
-pushd $HOME/new_ubuntu_temp_and_a_random_string
+# mkdir $HOME/new_ubuntu_temp_and_a_random_string
+# pushd $HOME/new_ubuntu_temp_and_a_random_string
 
 
 ####################
@@ -236,9 +230,9 @@ pushd $HOME/new_ubuntu_temp_and_a_random_string
 #######
 # Git #
 #######
-git config --global alias.up 'pull --rebase --autostash'
-git config --global user.signingkey #######
-git config --global commit.gpgSign true
+# git config --global alias.up 'pull --rebase --autostash'
+# git config --global user.signingkey #######
+# git config --global commit.gpgSign true
 
 
 
