@@ -13,6 +13,10 @@
       - ppa:git-core/ppa
       - deb https://dl.google.com/linux/chrome/deb/ stable main
       - "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
+    SIGNING_KEYS:
+      - https://dl-ssl.google.com/linux/linux_signing_key.pub
+      - https://download.docker.com/linux/ubuntu/gpg
+      - https://dl.yarnpkg.com/debian/pubkey.gpg
     TEMPDIR: ./temp
 
 
@@ -30,6 +34,12 @@
       line: "PATH DEFAULT=${PATH}:{{ BINDIR }}"
       create: yes
 
+  - name: Add extra APT signing keys
+    apt_key:
+      url: "{{ item }}"
+      state: present
+    loop: "{{ SIGNING_KEYS }}"
+    become: yes
 
   - name: Add extra APT repositories
     apt_repository:
@@ -38,18 +48,6 @@
       state: present
       update_cache: no
     loop: "{{ REPOS }}"
-    become: yes
-
-  - name: Add Google APT signing key
-    apt_key:
-      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-      state: present
-    become: yes
-
-  - name: Add Docker APT signing key
-    apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-      state: present
     become: yes
 
   - name: Update all packages to their latest version
@@ -97,13 +95,25 @@
   - name: Install Oh My Zsh
     script: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
 
-  - name: Add config to .zshrc
+  - name: Add Python stuff to .zshrc
     blockinfile:
       path: "{{ HOMEDIR }}/.zshrc"
       block: |
         export PATH="{{ HOMEDIR }}/.pyenv/bin:$PATH"
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
+
+  - name: Install powerlevel10k
+    git:
+      repo: https://github.com/romkatv/powerlevel10k.git
+      depth: 1
+      dest: "{{ HOMEDIR }}/.oh-my-zsh/custom/themes/powerlevel10k"
+
+  - name: Add powerlevel10k theme to .zshrc
+    blockinfile:
+      path: "{{ HOMEDIR }}/.zshrc"
+      block: |
+        ZSH_THEME="powerlevel10k/powerlevel10k"
 
 
   ##############################
@@ -169,24 +179,79 @@
       name: pipx
       extra_args: --user
 
-  - name: Download pyenv installer
+  - name: Download pyenv installer (will be executed later)
     get_url:
       url: https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer
       dest: "{{ TEMPDIR }}/pyenv-installer"
       mode: u+rwx
-  - name: Install pyenv
-    script: "{{ TEMPDIR }}/pyenv-installer"
 
-  - name: Download Poetry installer
+  # - name: Install pyenv
+  #   script: "{{ TEMPDIR }}/pyenv-installer"
+
+  - name: Download Poetry installer (will be executed later)
     get_url:
       url: https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
       dest: "{{ TEMPDIR }}/get-poetry.py"
       mode: u+rwx
 
-  - name: Install Poetry
-    script: "{{ TEMPDIR }}/get-poetry.py"
+  # - name: Install Poetry
+  #   script: "{{ TEMPDIR }}/get-poetry.py"
 
 
+  #######################
+  # Node, pnpm and Yarn #
+  #######################
+  - name: Download Node installer (will be executed later)
+    get_url:
+      url: https://deb.nodesource.com/setup_14.x
+      dest: "{{ TEMPDIR }}/node-setup_14.sh"
+      mode: u+rwx
+
+  - name: Mame npm install packages without requiring root access
+    blockinfile:
+      path: "{{ HOMEDIR }}/.zshrc"
+      block: |
+        NPM_PACKAGES="${HOME}/.npm-packages"
+        export PATH="$PATH:$NPM_PACKAGES/bin"
+
+  - name: Install pnpm
+    community.general.npm:
+      name: pnpm
+      global: yes
+
+  - name: Mame npm install packages without requiring root access and add yarn binaries to PATH
+    blockinfile:
+      path: "{{ HOMEDIR }}/.zshrc"
+      block: |
+        NPM_PACKAGES="${HOME}/.npm-packages"
+        export PATH="$PATH:$NPM_PACKAGES/bin"
+        export PATH=\"$(yarn global bin):\$PATH\"
+
+
+  ###########
+  # Mailhog #
+  ###########
+  - name: Get the URL for the latest version of Mailhog from Github
+    shell: |
+      curl -s https://github.com/mailhog/MailHog/releases/latest \
+      | jq '.assets[].browser_download_url
+      | select(endswith("_linux_amd64"))
+      | {url: ., filename: split("/")[-1]}'
+    register: mailhog_version
+  - debug: msg="{{ mailhog_version.stdout }}"
+
+  - name: Download the latest version of Mailhog to a temporary file
+    get_url:
+      url: "{{ (mailhog_version.stdout | from_json).url }}"
+      dest: "{{ BINDIR }}/{{ (mailhog_version.stdout | from_json).filename }}"
+      mode: u+rwx
+
+  ###################
+  # MongoDB Compass #
+  ###################
+  - name: Install MongoDB Compass
+    apt:
+      deb: https://downloads.mongodb.com/compass/mongodb-compass_1.26.1_amd64.deb
 
 
 
@@ -195,7 +260,7 @@
       autoremove: yes
     become: yes
 
-  - name: Remove temporary directory to store downloaded files
-    file:
-      path: "{{ TEMPDIR }}"
-      state: absent
+  # - name: Remove temporary directory to store downloaded files
+  #   file:
+  #     path: "{{ TEMPDIR }}"
+  #     state: absent

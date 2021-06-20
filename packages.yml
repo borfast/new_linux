@@ -39,6 +39,7 @@ packages:
   - ruby-dev
   - tk-dev
   - xz-utils
+  - yarn
   - zlib1g-dev
 
   # GRAPHICS
