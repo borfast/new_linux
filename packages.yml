@@ -20,6 +20,7 @@ packages:
   - make
   - meld
   - mysql-client
+  - nodejs
   - openjdk-11-jdk
   - openjdk-11-source
   - openjdk-14-jdk

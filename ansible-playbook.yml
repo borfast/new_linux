@@ -13,9 +13,11 @@
       - ppa:git-core/ppa
       - "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
       - "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
+      - deb https://deb.nodesource.com/16.x {{ CODENAME }} main
     SIGNING_KEYS:
       - https://dl-ssl.google.com/linux/linux_signing_key.pub
       - https://download.docker.com/linux/ubuntu/gpg
+      - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
       - https://dl.yarnpkg.com/debian/pubkey.gpg
     TEMPDIR: ./temp
 
@@ -201,13 +203,7 @@
   #######################
   # Node, pnpm and Yarn #
   #######################
-  - name: Download Node installer (will be executed later)
-    get_url:
-      url: https://deb.nodesource.com/setup_14.x
-      dest: "{{ TEMPDIR }}/node-setup_14.sh"
-      mode: u+rwx
-
-  - name: Mame npm install packages without requiring root access
+  - name: Make npm install packages without requiring root access
     blockinfile:
       path: "{{ HOMEDIR }}/.zshrc"
       block: |
@@ -219,7 +215,7 @@
       name: pnpm
       global: yes
 
-  - name: Mame npm install packages without requiring root access and add yarn binaries to PATH
+  - name: Make npm install packages without requiring root access and add yarn binaries to PATH
     blockinfile:
       path: "{{ HOMEDIR }}/.zshrc"
       block: |
