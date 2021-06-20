@@ -11,8 +11,8 @@
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
-      - deb https://dl.google.com/linux/chrome/deb/ stable main
-      - "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
+      - "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
+      - "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
     SIGNING_KEYS:
       - https://dl-ssl.google.com/linux/linux_signing_key.pub
       - https://download.docker.com/linux/ubuntu/gpg
