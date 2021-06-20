@@ -5,14 +5,19 @@
 UBUNTU_CODENAME=focal
 
 # Install Ansible, so we can use it for everything
-sudo apt update
-sudo apt install -y software-properties-common
-sudo apt-add-repository -y ppa:ansible/ansible
-sudo apt update
-sudo apt install ansible -y
-ansible-galaxy collection install community.general
-
-ansible-playbook ansible-playbook.yml --ask-become-pass
+sudo apt update &&
+echo "Installing software-properties-common..." &&
+sudo apt install -y software-properties-common &&
+echo "Adding Ansible's repository..." &&
+sudo apt-add-repository -y ppa:ansible/ansible &&
+echo "Updating package cache..." &&
+sudo apt update &&
+echo "Installing Ansible..." &&
+sudo apt install ansible -y &&
+echo "Installing Ansible community.general collection..." &&
+ansible-galaxy collection install community.general &&
+echo "Running Ansible playbook - this is the big one!" &&
+ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
 
