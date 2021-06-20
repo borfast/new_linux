@@ -8,15 +8,15 @@ UBUNTU_CODENAME=focal
 sudo apt update &&
 printf "\n--> Installing software-properties-common...\n" &&
 sudo apt install -y software-properties-common &&
-printf "\n--> Adding Ansible's repository..." &&
+printf "\n--> Adding Ansible's repository...\n" &&
 sudo apt-add-repository -y ppa:ansible/ansible &&
-printf "\n--> Updating package cache..." &&
+printf "\n--> Updating package cache...\n" &&
 sudo apt update &&
-printf "\n--> Installing Ansible..." &&
+printf "\n--> Installing Ansible...\n" &&
 sudo apt install ansible -y &&
-printf "\n--> Installing Ansible community.general collection..." &&
+printf "\n--> Installing Ansible community.general collection...\n" &&
 ansible-galaxy collection install community.general &&
-printf "\n--> Running Ansible playbook - this is the big one!" &&
+printf "\n--> Running Ansible playbook - this is the big one!\n" &&
 ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
@@ -310,7 +310,7 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
 ## Clean up
-printf "\n--> Running special installers and cleaning up" &&
+printf "\n--> Running special installers and cleaning up:\n" &&
 # popd &&
 # rm -rf $HOME/new_ubuntu_temp_and_a_random_string &&
 # sudo apt-get -f install &&
