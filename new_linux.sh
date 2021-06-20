@@ -319,7 +319,7 @@ echo "\n--> Running special installers and cleaning up" &&
 # sudo apt-get -y clean
 
 pushd ./temp &&
-echo "\n--> Installing pyenv...\n"
+echo "\n--> Installing pyenv...\n" &&
 ./pyenv-installer &&
 echo "\n--> Installing poetry...\n"
 python3 ./get-poetry.py &&
