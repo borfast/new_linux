@@ -6,17 +6,17 @@ UBUNTU_CODENAME=focal
 
 # Install Ansible, so we can use it for everything
 sudo apt update &&
-echo "Installing software-properties-common..." &&
+echo "\n--> Installing software-properties-common...\n" &&
 sudo apt install -y software-properties-common &&
-echo "Adding Ansible's repository..." &&
+echo "\n--> Adding Ansible's repository..." &&
 sudo apt-add-repository -y ppa:ansible/ansible &&
-echo "Updating package cache..." &&
+echo "\n--> Updating package cache..." &&
 sudo apt update &&
-echo "Installing Ansible..." &&
+echo "\n--> Installing Ansible..." &&
 sudo apt install ansible -y &&
-echo "Installing Ansible community.general collection..." &&
+echo "\n--> Installing Ansible community.general collection..." &&
 ansible-galaxy collection install community.general &&
-echo "Running Ansible playbook - this is the big one!" &&
+echo "\n--> Running Ansible playbook - this is the big one!" &&
 ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
@@ -310,7 +310,7 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
 ## Clean up
-echo "Running special installers and cleaning up" &&
+echo "\n--> Running special installers and cleaning up" &&
 # popd &&
 # rm -rf $HOME/new_ubuntu_temp_and_a_random_string &&
 # sudo apt-get -f install &&
@@ -319,8 +319,12 @@ echo "Running special installers and cleaning up" &&
 # sudo apt-get -y clean
 
 pushd ./temp &&
+echo "\n--> Installing pyenv...\n"
 ./pyenv-installer &&
+echo "\n--> Installing poetry...\n"
 python3 ./get-poetry.py &&
+echo "\n--> Installing node...\n"
 ./node-setup_14.sh &&
 popd &&
-rm -rf ./temp
+rm -rf ./temp &&
+echo "\n--> All done!\n"
