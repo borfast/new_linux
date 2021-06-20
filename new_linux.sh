@@ -6,17 +6,17 @@ UBUNTU_CODENAME=focal
 
 # Install Ansible, so we can use it for everything
 sudo apt update &&
-echo "\n--> Installing software-properties-common...\n" &&
+printf "\n--> Installing software-properties-common...\n" &&
 sudo apt install -y software-properties-common &&
-echo "\n--> Adding Ansible's repository..." &&
+printf "\n--> Adding Ansible's repository..." &&
 sudo apt-add-repository -y ppa:ansible/ansible &&
-echo "\n--> Updating package cache..." &&
+printf "\n--> Updating package cache..." &&
 sudo apt update &&
-echo "\n--> Installing Ansible..." &&
+printf "\n--> Installing Ansible..." &&
 sudo apt install ansible -y &&
-echo "\n--> Installing Ansible community.general collection..." &&
+printf "\n--> Installing Ansible community.general collection..." &&
 ansible-galaxy collection install community.general &&
-echo "\n--> Running Ansible playbook - this is the big one!" &&
+printf "\n--> Running Ansible playbook - this is the big one!" &&
 ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 
@@ -26,7 +26,7 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 # Create the user bin folder and add it to the PATH
 # mkdir -p $HOME/progs/bin
-# echo "PATH DEFAULT=${PATH}:${HOME}/progs/bin" >> $HOME/.pam_environment
+# printf "PATH DEFAULT=${PATH}:${HOME}/progs/bin" >> $HOME/.pam_environment
 # export PATH="$PATH:$HOME/progs/bin"
 
 
@@ -221,7 +221,7 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 ##############
 # Virtualbox #
 ##############
-# echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $UBUNTU_CODENAME contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+# printf "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $UBUNTU_CODENAME contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 # wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 # sudo apt-get update
 # sudo apt-get install -y virtualbox-6.1 virtualbox-guest-x11
@@ -261,7 +261,7 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 # Docker - as instructed at https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community #
 #######################################################################################################################
 # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-# echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list
+# printf "deb [arch=amd64] https://download.docker.com/linux/ubuntu $UBUNTU_CODENAME stable" | sudo tee /etc/apt/sources.list.d/docker.list
 # sudo apt-get update
 # sudo apt-get install docker-ce docker-ce-cli containerd.io
 
@@ -275,9 +275,9 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 # sudo npm add -g pnpm
 
 # curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+# printf "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 # sudo apt-get -y update && sudo apt-get -y install yarn
-# echo "export PATH=\"$(yarn global bin):\$PATH\"" >> .zshrc
+# printf "export PATH=\"$(yarn global bin):\$PATH\"" >> .zshrc
 
 ########
 # Java #
@@ -306,11 +306,11 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 #######################################################
 # sudo apt-get install fonts-powerline zsh zsh-theme-powerlevel9k
 # sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-# echo "source /usr/share/powerlevel9k/powerlevel9k.zsh-theme" >> $HOME/.zshrc
+# printf "source /usr/share/powerlevel9k/powerlevel9k.zsh-theme" >> $HOME/.zshrc
 
 
 ## Clean up
-echo "\n--> Running special installers and cleaning up" &&
+printf "\n--> Running special installers and cleaning up" &&
 # popd &&
 # rm -rf $HOME/new_ubuntu_temp_and_a_random_string &&
 # sudo apt-get -f install &&
@@ -319,12 +319,12 @@ echo "\n--> Running special installers and cleaning up" &&
 # sudo apt-get -y clean
 
 pushd ./temp &&
-echo "\n--> Installing pyenv...\n" &&
+printf "\n--> Installing pyenv...\n" &&
 ./pyenv-installer &&
-echo "\n--> Installing poetry...\n"
+printf "\n--> Installing poetry...\n"
 python3 ./get-poetry.py &&
-echo "\n--> Installing node...\n"
+printf "\n--> Installing node...\n"
 ./node-setup_14.sh &&
 popd &&
 rm -rf ./temp &&
-echo "\n--> All done!\n"
+printf "\n--> All done!\n"
