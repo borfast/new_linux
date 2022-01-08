@@ -35,6 +35,9 @@ echo 'alias ls="exa"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
+printf "\n--> Installing fzf...\n" &&
+$HOEM/.fzf/install --key-bindings --completion --no-fish --update-rc &&
+
 ## Clean up
 popd &&
 printf "\nRemoving temporary directory..." &&

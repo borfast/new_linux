@@ -132,6 +132,12 @@
       path: "{{ HOMEDIR }}/.zshrc"
       line: ZSH_THEME="powerlevel10k/powerlevel10k"
 
+  - name: Clone fzf fuzzy finder
+    git:
+      repo: https://github.com/junegunn/fzf.git
+      depth: 1
+      dest: "{{ HOMEDIR }}/.fzf"
+
 
   ##############################
   # Hugo static site generator #
