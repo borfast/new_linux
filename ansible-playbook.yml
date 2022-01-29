@@ -25,6 +25,11 @@
       - https://dl.yarnpkg.com/debian/pubkey.gpg
       - https://ngrok-agent.s3.amazonaws.com/ngrok.asc
     TEMPDIR: ./temp
+    NERD_FONTS_URLS:
+      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
 
 
 
@@ -117,10 +122,6 @@
       dest: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
     when: ohmyzsh_directory.stat.exists == false
 
-  - name: Install Oh My Zsh
-    script: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
-    when: ohmyzsh_directory.stat.exists == false
-
   - name: Install powerlevel10k
     git:
       repo: https://github.com/romkatv/powerlevel10k.git
@@ -131,6 +132,24 @@
     lineinfile:
       path: "{{ HOMEDIR }}/.zshrc"
       line: ZSH_THEME="powerlevel10k/powerlevel10k"
+      after: ZSH_THEME="robbyrussell"
+
+  - name: Remove robbyrussell ZSH theme
+    lineinfile:
+      path: "{{ HOMEDIR }}/.zshrc"
+      line: ZSH_THEME="robbyrussell"
+      state: absent
+
+  - name: Ensure fonts directory exists for Nerd fonts
+    file:
+      path: "{{ HOMEDIR }}/.fonts"
+      state: directory
+
+  - name: Install Nerd Fonts for powerlevel10k
+    get_url:
+      url: "{{ item }}"
+      dest: "{{ HOMEDIR }}/.fonts"
+    loop: "{{ NERD_FONTS_URLS }}"
 
   - name: Clone fzf fuzzy finder
     git:
@@ -232,10 +251,10 @@
         export PATH="$PATH:${HOME}/.npm-packages/bin"
         export PATH="$(yarn global bin):$PATH"
 
-  - name: Install pnpm
-    community.general.npm:
-      name: pnpm
-      global: yes
+  #- name: Install pnpm
+  #  community.general.npm:
+  #    name: pnpm
+  #    global: yes
 
 
   ###########
@@ -525,6 +544,13 @@
       deb: https://prerelease.keybase.io/keybase_amd64.deb
     become: yes
 
+  ######################
+  # Visual Studio Code #
+  ######################
+  - name: Install Visual Studio Code
+    apt:
+      deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+    become: yes
 
   #################
   # Final cleanup #

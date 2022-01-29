@@ -22,21 +22,25 @@ ansible-playbook ansible-playbook.yml --ask-become-pass &&
 printf "\n--> Running special installers:\n" &&
 pushd ./temp &&
 
+printf "\n--> Installing oh-my-zsh...\n" &&
+./install-oh-my-zsh.sh
+
 printf "\n--> Installing pyenv...\n" &&
 ./pyenv-installer
 
 printf "\n--> Installing poetry...\n" &&
-python3 ./install-poetry.py &&
+python3 "./install-poetry.py" &&
 
 printf "\n--> Installing Rust...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
+source $HOME/.cargo/env &&
 cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta &&
 echo 'alias ls="exa"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
 printf "\n--> Installing fzf...\n" &&
-$HOEM/.fzf/install --key-bindings --completion --no-fish --update-rc &&
+$HOME/.fzf/install --key-bindings --completion --no-fish --update-rc &&
 
 ## Clean up
 popd &&
