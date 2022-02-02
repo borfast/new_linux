@@ -16,6 +16,7 @@
       - deb https://deb.nodesource.com/node_16.x {{ CODENAME }} main
       - deb https://apt.kubernetes.io/ kubernetes-xenial main
       - deb https://ngrok-agent.s3.amazonaws.com buster main
+      - deb https://brave-browser-apt-release.s3.brave.com/ stable main
 
     SIGNING_KEYS:
       - https://dl-ssl.google.com/linux/linux_signing_key.pub
@@ -24,6 +25,7 @@
       - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
       - https://dl.yarnpkg.com/debian/pubkey.gpg
       - https://ngrok-agent.s3.amazonaws.com/ngrok.asc
+      - https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
     TEMPDIR: ./temp
     NERD_FONTS_URLS:
       - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf

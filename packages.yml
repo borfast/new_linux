@@ -110,4 +110,5 @@ packages:
   # STUFF
   - qbittorrent
   - google-chrome-stable
+  - brave-browser
   - warpinator
