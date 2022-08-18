@@ -1,6 +1,7 @@
 packages:
   # DEVELOPMENT
   - build-essential
+  - cmake
   - containerd.io
   - docker-ce
   - docker-ce-cli
