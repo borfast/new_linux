@@ -31,10 +31,12 @@ printf "\n--> Installing pyenv...\n" &&
 printf "\n--> Installing poetry...\n" &&
 python3 "./install-poetry.py" &&
 
-printf "\n--> Installing Rust...\n" &&
+printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
 cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta &&
+
+printf "\n--> Setting up aliases for ls -> exa, grep -> rg, and cat -> bat...\n" &&
 echo 'alias ls="exa"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
