@@ -192,28 +192,6 @@
       name: io.dbeaver.DBeaverCommunity
       state: present
 
-
-  #####################
-  # Git configuration #
-  #####################
-  - name: Add git up alias
-    community.general.git_config:
-      name: alias.up
-      scope: global
-      value: pull --rebase --autostash
-
-  - name: Set commit signing key
-    community.general.git_config:
-      name: user.signingkey
-      scope: global
-      value: 55F9BCEB7472D59C
-
-  - name: Activate commit signing
-    community.general.git_config:
-      name: commit.gpgSign
-      scope: global
-      value: true
-
   ################
   # Python stuff #
   ################

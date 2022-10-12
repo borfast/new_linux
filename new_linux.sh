@@ -36,6 +36,23 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
 cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta &&
 
+printf "\n--> Git configuration\n" &&
+git config --global alias.up "pull --rebase --autostash" &&
+git config --global user.signingkey 55F9BCEB7472D59C &&
+git config --global commit.gpgSign true &&
+
+printf "\n--> Set up git delta\n" &&
+git config --global core.pager delta &&
+git config --global interactive.diffFilter "delta --color-only --features=interactive" &&
+git config --global delta.navigate true &&
+git config --global delta.light false &&
+git config --global delta.line-numbers true &&
+git config --global delta.side-by-side true &&
+git config --global delta.keep-plus-minus-markers false &&
+git config --global delta.hunk-header-style "file line-number syntax" &&
+
+
+
 printf "\n--> Setting up aliases for ls -> exa, grep -> rg, and cat -> bat...\n" &&
 echo 'alias ls="exa"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
