@@ -184,6 +184,14 @@
     become: yes
 
 
+  ##############################
+  # Flatpak dark theme support #
+  ##############################
+  - name: Install the Mint Y Dark Aqua flatpak support
+    community.general.flatpak:
+      name: org.gtk.Gtk3theme.Mint-Y-Dark-Aqua
+      state: present
+
   ###########
   # DBeaver #
   ###########
