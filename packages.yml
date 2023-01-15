@@ -32,7 +32,6 @@ packages:
   - openjdk-19-source
   - postgresql-client
   - postgresql-contrib
-  - pgadmin3
   - python-pip-whl
   - python3-all-dev
   - python3-openssl
