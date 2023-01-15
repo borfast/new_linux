@@ -107,34 +107,34 @@
   ######################
   # ZShell and friends #
   ######################
-  - name: Check if Oh My Zsh is already installed
-    stat:
-      path: "{{ HOMEDIR }}/.oh-my-zsh/"
-    register: ohmyzsh_directory
+  # - name: Check if Oh My Zsh is already installed
+  #   stat:
+  #     path: "{{ HOMEDIR }}/.oh-my-zsh/"
+  #   register: ohmyzsh_directory
 
-  - name: Download Oh My Zsh installer
-    get_url:
-      url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-      dest: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
-    when: ohmyzsh_directory.stat.exists == false
+  # - name: Download Oh My Zsh installer
+  #   get_url:
+  #     url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+  #     dest: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
+  #   when: ohmyzsh_directory.stat.exists == false
 
-  - name: Install powerlevel10k
-    git:
-      repo: https://github.com/romkatv/powerlevel10k.git
-      depth: 1
-      dest: "{{ HOMEDIR }}/.oh-my-zsh/custom/themes/powerlevel10k"
+  # - name: Install powerlevel10k
+  #   git:
+  #     repo: https://github.com/romkatv/powerlevel10k.git
+  #     depth: 1
+  #     dest: "{{ HOMEDIR }}/.oh-my-zsh/custom/themes/powerlevel10k"
 
-  - name: Add powerlevel10k theme to .zshrc
-    lineinfile:
-      path: "{{ HOMEDIR }}/.zshrc"
-      line: ZSH_THEME="powerlevel10k/powerlevel10k"
-      after: ZSH_THEME="robbyrussell"
+  # - name: Add powerlevel10k theme to .zshrc
+  #   lineinfile:
+  #     path: "{{ HOMEDIR }}/.zshrc"
+  #     line: ZSH_THEME="powerlevel10k/powerlevel10k"
+  #     after: ZSH_THEME="robbyrussell"
 
-  - name: Remove robbyrussell ZSH theme
-    lineinfile:
-      path: "{{ HOMEDIR }}/.zshrc"
-      line: ZSH_THEME="robbyrussell"
-      state: absent
+  # - name: Remove robbyrussell ZSH theme
+  #   lineinfile:
+  #     path: "{{ HOMEDIR }}/.zshrc"
+  #     line: ZSH_THEME="robbyrussell"
+  #     state: absent
 
   - name: Ensure fonts directory exists for Nerd fonts
     file:
