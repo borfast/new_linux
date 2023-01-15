@@ -1,8 +1,8 @@
 #!/bin/bash
 
-## Assuming Linux Mint 20. Should also mostly work with Ubuntu 20.04
+## Assuming Linux Mint 21. Should also mostly work with Ubuntu 22.04
 
-UBUNTU_CODENAME=focal
+UBUNTU_CODENAME=jammy
 
 # Install Ansible first, so we can run the playbook
 sudo apt update &&
@@ -34,7 +34,7 @@ python3 "./install-poetry.py" &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta &&
+cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&

@@ -3,7 +3,7 @@
   connection: local
 
   vars:
-    CODENAME: focal
+    CODENAME: jammy
     HOMEDIR: "{{ ansible_env.HOME }}"
     BINDIR: "{{ HOMEDIR }}/bin"
     PROGSDIR: "{{ HOMEDIR }}/progs"
@@ -27,12 +27,6 @@
       - https://ngrok-agent.s3.amazonaws.com/ngrok.asc
       - https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
     TEMPDIR: ./temp
-    NERD_FONTS_URLS:
-      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-      - https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
-
 
 
   tasks:
@@ -147,11 +141,21 @@
       path: "{{ HOMEDIR }}/.fonts"
       state: directory
 
-  - name: Install Nerd Fonts for powerlevel10k
-    get_url:
-      url: "{{ item }}"
+  - name: Get the URL for the latest version of JetBrains Mono Nerd Fonts
+    shell: |
+      curl https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \
+      | jq '.assets[].browser_download_url
+      | select(endswith("JetBrainsMono.zip"))
+      | {url: ., filename: split("/")[-1]}'
+    register: jetbrains_mono_info
+  - debug: msg="{{ jetbrains_mono_info.stdout }}"
+
+  - name: Install Jetbrains Mono Nerd Fonts
+    ansible.builtin.unarchive:
+      src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip
+      remote_src: yes
       dest: "{{ HOMEDIR }}/.fonts"
-    loop: "{{ NERD_FONTS_URLS }}"
+
 
   - name: Clone fzf fuzzy finder
     git:
