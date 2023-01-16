@@ -3,539 +3,327 @@
   connection: local
 
   vars:
-    CODENAME: jammy
-    HOMEDIR: "{{ ansible_env.HOME }}"
-    BINDIR: "{{ HOMEDIR }}/bin"
-    PROGSDIR: "{{ HOMEDIR }}/progs"
-    REPOS:
+    codename: jammy
+    homedir: "{{ ansible_env.HOME }}"
+    bin: "{{ homedir }}/bin"
+    progsdir: "{{ homedir }}/progs"
+    tempdir: ./temp
+    aptkeysdir: /etc/apt/keyrings
+    repos:
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
-      - "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
-      - "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ CODENAME }} stable"
-      - deb https://deb.nodesource.com/node_16.x {{ CODENAME }} main
-      - deb https://apt.kubernetes.io/ kubernetes-xenial main
-      - deb https://ngrok-agent.s3.amazonaws.com buster main
-      - deb https://brave-browser-apt-release.s3.brave.com/ stable main
-
-    SIGNING_KEYS:
-      - https://dl-ssl.google.com/linux/linux_signing_key.pub
-      - https://packages.cloud.google.com/apt/doc/apt-key.gpg
-      - https://download.docker.com/linux/ubuntu/gpg
-      - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-      - https://dl.yarnpkg.com/debian/pubkey.gpg
-      - https://ngrok-agent.s3.amazonaws.com/ngrok.asc
-      - https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-    TEMPDIR: ./temp
+      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/google.pub.gpg] https://dl.google.com/linux/chrome/deb/ stable main"
+      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/google_cloud.gpg.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/docker.gpg.gpg] https://download.docker.com/linux/ubuntu {{ codename }} stable"
+      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/ngrok.asc.gpg] https://ngrok-agent.s3.amazonaws.com buster main"
+      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/brave.gpg.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    signing_keys:
+      google.pub:
+        url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+        # checksum: sha256:pdjgspf
+      google_cloud.gpg:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      docker.gpg:
+        url: https://download.docker.com/linux/ubuntu/gpg
+      ngrok.asc:
+        url: https://ngrok-agent.s3.amazonaws.com/ngrok.asc
+      brave.gpg:
+        url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
 
   tasks:
 
-  - name: Create $HOME/bin if it does not exist
-    file:
-      path: "{{ BINDIR }}"
-      state: directory
-
-  - name: Create $HOME/progs if it does not exist
-    file:
-      path: "{{ PROGSDIR }}"
-      state: directory
-
-
-  - name: Add $HOME/bin to $PATH.
-    lineinfile:
-      path: "{{ HOMEDIR }}/.pam_environment"
-      line: "PATH DEFAULT=${PATH}:{{ BINDIR }}"
-      create: yes
-
-  - name: Add $HOME/.local/bin to $PATH.
-    lineinfile:
-      path: "{{ HOMEDIR }}/.pam_environment"
-      line: "PATH DEFAULT=${PATH}:/home/@{PAM_USER}/.local/bin"
-      create: yes
-
-  - name: Add extra APT signing keys
-    apt_key:
-      url: "{{ item }}"
-      state: present
-    loop: "{{ SIGNING_KEYS }}"
-    become: yes
-
-  - name: Add extra APT repositories
-    apt_repository:
-      repo: "{{ item }}"
-      codename: "{{ CODENAME }}"
-      state: present
-      update_cache: no
-    loop: "{{ REPOS }}"
-    become: yes
-
-  - name: Update all packages to their latest version
-    apt:
-      name: "*"
-      state: latest
-      update_cache: yes
-    become: yes
-
-  - name: Include list of packages
-    include_vars:
-      file: packages.yml
-      name: package_list
-
-  - name: Install .deb packages
-    apt:
-      name: "{{ package_list.deb }}"
-      state: latest
-      update_cache: yes
-    become: yes
-
-  - name: Install Flatpak packages
-    community.general.flatpak:
-      name: "{{ package_list.flatpak }}"
-      state: latest
-
-  #########################################
-  # From here on we install and configure #
-  # stuff that requires special steps.    #
-  #########################################
-
-  - name: Create temporary directory to store downloaded files
-    file:
-      path: "{{ TEMPDIR }}"
-      state: directory
-
-  - name: libdvd-pkg needs dpkg-reconfigure
-    command:
-      cmd: dpkg-reconfigure -f noninteractive libdvd-pkg
-    become: yes
-
-  ######################
-  # ZShell and friends #
-  ######################
-  # - name: Check if Oh My Zsh is already installed
-  #   stat:
-  #     path: "{{ HOMEDIR }}/.oh-my-zsh/"
-  #   register: ohmyzsh_directory
-
-  # - name: Download Oh My Zsh installer
-  #   get_url:
-  #     url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-  #     dest: "{{ TEMPDIR }}/install-oh-my-zsh.sh"
-  #   when: ohmyzsh_directory.stat.exists == false
-
-  # - name: Install powerlevel10k
-  #   git:
-  #     repo: https://github.com/romkatv/powerlevel10k.git
-  #     depth: 1
-  #     dest: "{{ HOMEDIR }}/.oh-my-zsh/custom/themes/powerlevel10k"
-
-  # - name: Add powerlevel10k theme to .zshrc
-  #   lineinfile:
-  #     path: "{{ HOMEDIR }}/.zshrc"
-  #     line: ZSH_THEME="powerlevel10k/powerlevel10k"
-  #     after: ZSH_THEME="robbyrussell"
-
-  # - name: Remove robbyrussell ZSH theme
-  #   lineinfile:
-  #     path: "{{ HOMEDIR }}/.zshrc"
-  #     line: ZSH_THEME="robbyrussell"
-  #     state: absent
-
-  - name: Ensure fonts directory exists for Nerd fonts
-    file:
-      path: "{{ HOMEDIR }}/.fonts"
-      state: directory
-
-  - name: Get the URL for the latest version of JetBrains Mono Nerd Fonts
-    shell: |
-      curl https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(endswith("JetBrainsMono.zip"))
-      | {url: ., filename: split("/")[-1]}'
-    register: jetbrains_mono_info
-  - debug: msg="{{ jetbrains_mono_info.stdout }}"
-
-  - name: Install Jetbrains Mono Nerd Fonts
-    ansible.builtin.unarchive:
-      src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip
-      remote_src: yes
-      dest: "{{ HOMEDIR }}/.fonts"
-
-
-  - name: Clone fzf fuzzy finder
-    git:
-      repo: https://github.com/junegunn/fzf.git
-      depth: 1
-      dest: "{{ HOMEDIR }}/.fzf"
-
-
-  ##############################
-  # Hugo static site generator #
-  ##############################
-  - name: Get the URL for the latest version of Hugo from Github
-    shell: |
-      curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(endswith("Linux-64bit.deb"))
-      | select(contains("extended"))
-      | {url: ., filename: split("/")[-1]}'
-    register: hugo_version
-  - debug: msg="{{ hugo_version.stdout }}"
-
-  - name: Download the latest version of Hugo to a temporary file
-    get_url:
-      url: "{{ (hugo_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (hugo_version.stdout | from_json).filename }}"
-
-  - name: Install the latest version of Hugo from the temporary file
-    apt:
-      deb: "{{ TEMPDIR }}/{{ (hugo_version.stdout | from_json).filename }}"
-    become: yes
-
-  ################
-  # Python stuff #
-  ################
-  - name: Install pipx
-    pip:
-      name: pipx
-      extra_args: --user
-
-  - name: Download pyenv installer (will be executed later)
-    get_url:
-      url: https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer
-      dest: "{{ TEMPDIR }}/pyenv-installer"
-      mode: u+rwx
-
-  - name: Download Poetry installer (will be executed later)
-    get_url:
-      url: https://install.python-poetry.org
-      dest: "{{ TEMPDIR }}/install-poetry.py"
-      mode: u+rwx
-
-  - name: Add Python stuff to .zshrc
-    blockinfile:
-      path: "{{ HOMEDIR }}/.zshrc"
-      block: |
-        export PATH="{{ HOMEDIR }}/.pyenv/bin:$PATH"
-        eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
-
-
-  #######################
-  # Node, pnpm and Yarn #
-  #######################
-  - name: Make npm install packages without requiring root access and add yarn binaries to PATH
-    blockinfile:
-      path: "{{ HOMEDIR }}/.zshrc"
-      block: |
-        export PATH="$PATH:${HOME}/.npm-packages/bin"
-        export PATH="$(yarn global bin):$PATH"
-
-  #- name: Install pnpm
-  #  community.general.npm:
-  #    name: pnpm
-  #    global: yes
-
-
-  ###########
-  # Mailhog #
-  ###########
-  - name: Get the URL for the latest version of Mailhog from Github
-    shell: |
-      curl -s https://api.github.com/repos/mailhog/MailHog/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(endswith("_linux_amd64"))
-      | {url: ., filename: split("/")[-1]}'
-    register: mailhog_version
-  - debug: msg="{{ mailhog_version.stdout }}"
-
-  - name: Download the latest version of Mailhog to a temporary file
-    get_url:
-      url: "{{ (mailhog_version.stdout | from_json).url }}"
-      dest: "{{ BINDIR }}/mailhog"
-      mode: u+rwx
-
-
-  #############
-  # Syncthing #
-  #############
-  - name: Get the URL for the latest version of Syncthing from Github
-    shell: |
-      curl -s https://api.github.com/repos/syncthing/syncthing/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(contains("syncthing-linux-amd64"))
-      | {url: ., filename: split("/")[-1]}'
-    register: syncthing_version
-  - debug: msg="{{ syncthing_version.stdout }}"
-
-  - name: Download the latest version of Syncthing to a temporary file
-    get_url:
-      url: "{{ (syncthing_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (syncthing_version.stdout | from_json).filename }}"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract Syncthing into
-    file:
-      path: "{{ PROGSDIR }}/syncthing_temp_extract"
-      state: directory
-
-  - name: Extract Syncthing into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/{{ (syncthing_version.stdout | from_json).filename }}"
-      dest: "{{ PROGSDIR }}/syncthing_temp_extract"
-
-  - name: Create a final directory for Syncthing
-    file:
-      path: "{{ PROGSDIR }}/syncthing"
-      state: directory
-
-  - name: Copy Syncthing to into progs/bin
-    copy:
-      src: "{{ PROGSDIR }}/syncthing_temp_extract/{{ (syncthing_version.stdout | from_json).filename | splitext | first | splitext | first }}/"
-      dest: "{{ PROGSDIR }}/syncthing"
-
-  - name: Remove Syncthing temporary extract directory
-    file:
-      path: "{{ PROGSDIR }}/syncthing_temp_extract"
-      state: absent
-
-
-  ######################################################
-  # kubectx - kubectl is installed via package manager #
-  ######################################################
-  - name: Get the URL for the latest version of kubectx from Github
-    shell: |
-      curl -s https://api.github.com/repos/ahmetb/kubectx/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(contains("kubectx_v"))
-      | select(endswith("_linux_x86_64.tar.gz"))
-      | {url: ., filename: split("/")[-1]}'
-    register: kubectx_version
-  - debug: msg="{{ kubectx_version.stdout }}"
-
-  - name: Download the latest version of kubectx to a temporary file
-    get_url:
-      url: "{{ (kubectx_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (kubectx_version.stdout | from_json).filename }}"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract kubectx into
-    file:
-      path: "{{ BINDIR }}/kubectx_temp_extract"
-      state: directory
-
-  - name: Extract kubectx into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/{{ (kubectx_version.stdout | from_json).filename }}"
-      dest: "{{ BINDIR }}/kubectx_temp_extract"
-
-  - name: Copy kubectx to into progs/bin
-    copy:
-      src: "{{ BINDIR }}/kubectx_temp_extract/kubectx"
-      dest: "{{ BINDIR }}/kubectx"
-      mode: "u+rwx"
-
-  - name: Remove kubectx temporary extract directory
-    file:
-      path: "{{ BINDIR }}/kubectx_temp_extract"
-      state: absent
-
-  #####################################################
-  # kubens - kubectl is installed via package manager #
-  #####################################################
-  - name: Get the URL for the latest version of kubens from Github
-    shell: |
-      curl -s https://api.github.com/repos/ahmetb/kubectx/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(contains("kubens_v"))
-      | select(endswith("_linux_x86_64.tar.gz"))
-      | {url: ., filename: split("/")[-1]}'
-    register: kubens_version
-  - debug: msg="{{ kubens_version.stdout }}"
-
-  - name: Download the latest version of kubens to a temporary file
-    get_url:
-      url: "{{ (kubens_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (kubens_version.stdout | from_json).filename }}"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract kubens into
-    file:
-      path: "{{ BINDIR }}/kubens_temp_extract"
-      state: directory
-
-  - name: Extract kubens into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/{{ (kubens_version.stdout | from_json).filename }}"
-      dest: "{{ BINDIR }}/kubens_temp_extract"
-
-  - name: Copy kubens to into progs/bin
-    copy:
-      src: "{{ BINDIR }}/kubens_temp_extract/kubens"
-      dest: "{{ BINDIR }}/kubens"
-      mode: "u+rwx"
-
-  - name: Remove kubens temporary extract directory
-    file:
-      path: "{{ BINDIR }}/kubens_temp_extract"
-      state: absent
-
-
-  #######
-  # k9s #
-  #######
-  - name: Get the URL for the latest version of k9s from Github
-    shell: |
-      curl -s https://api.github.com/repos/derailed/k9s/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(endswith("k9s_Linux_x86_64.tar.gz"))
-      | {url: ., filename: split("/")[-1]}'
-    register: k9s_version
-  - debug: msg="{{ k9s_version.stdout }}"
-
-  - name: Download the latest version of k9s to a temporary file
-    get_url:
-      url: "{{ (k9s_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (k9s_version.stdout | from_json).filename }}"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract k9s into
-    file:
-      path: "{{ BINDIR }}/k9s_temp_extract"
-      state: directory
-
-  - name: Extract k9s into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/{{ (k9s_version.stdout | from_json).filename }}"
-      dest: "{{ BINDIR }}/k9s_temp_extract"
-
-  - name: Copy k9s to into progs/bin
-    copy:
-      src: "{{ BINDIR }}/k9s_temp_extract/k9s"
-      dest: "{{ BINDIR }}/k9s"
-      mode: "u+rwx"
-
-  - name: Remove k9s temporary extract directory
-    file:
-      path: "{{ BINDIR }}/k9s_temp_extract"
-      state: absent
-
-
-  ########
-  # Helm #
-  ########
-  - name: Download Helm to a temporary file
-    get_url:
-      url: "https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz"
-      dest: "{{ TEMPDIR }}/helm.tar.gz"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract helm into
-    file:
-      path: "{{ BINDIR }}/helm_temp_extract"
-      state: directory
-
-  - name: Extract helm into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/helm.tar.gz"
-      dest: "{{ BINDIR }}/helm_temp_extract"
-
-  - name: Copy helm to into progs/bin
-    copy:
-      src: "{{ BINDIR }}/helm_temp_extract/linux-amd64/helm"
-      dest: "{{ BINDIR }}/helm"
-      mode: "u+rwx"
-
-  - name: Remove helm temporary extract directory
-    file:
-      path: "{{ BINDIR }}/helm_temp_extract"
-      state: absent
-
-
-  ###########
-  # Lazygit #
-  ###########
-  - name: Get the URL for the latest version of lazygit from Github
-    shell: |
-      curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
-      | jq '.assets[].browser_download_url
-      | select(endswith("_Linux_x86_64.tar.gz"))
-      | {url: ., filename: split("/")[-1]}'
-    register: lazygit_version
-  - debug: msg="{{ lazygit_version.stdout }}"
-
-  - name: Download the latest version of lazygit to a temporary file
-    get_url:
-      url: "{{ (lazygit_version.stdout | from_json).url }}"
-      dest: "{{ TEMPDIR }}/{{ (lazygit_version.stdout | from_json).filename }}"
-
-  # This cannot be extracted inside {{ TEMPDIR }} because the unarchive Ansible module seems
-  # to not be smart enough to be able to extract the archive to the same directory it is in :(
-  - name: Create a temporary directory to extract lazygit into
-    file:
-      path: "{{ BINDIR }}/lazygit_temp_extract"
-      state: directory
-
-  - name: Extract lazygit into temporary directory
-    unarchive:
-      src: "{{ TEMPDIR }}/{{ (lazygit_version.stdout | from_json).filename }}"
-      dest: "{{ BINDIR }}/lazygit_temp_extract"
-
-  - name: Copy lazygit to into progs/bin
-    copy:
-      src: "{{ BINDIR }}/lazygit_temp_extract/lazygit"
-      dest: "{{ BINDIR }}/lazygit"
-      mode: "u+rwx"
-
-  - name: Remove lazygit temporary extract directory
-    file:
-      path: "{{ BINDIR }}/lazygit_temp_extract"
-      state: absent
-
-
-  ###################
-  # Kubernetes Lens #
-  ###################
-  - name: Install Kubernetes Lens
-    apt:
-      deb: https://api.k8slens.dev/binaries/Lens-5.3.2-latest.20211201.1.amd64.deb
-    become: yes
-
-
-
-  ###################
-  # MongoDB Compass #
-  ###################
-  - name: Install MongoDB Compass
-    apt:
-      deb: https://downloads.mongodb.com/compass/mongodb-compass_1.29.5_amd64.deb
-    become: yes
-
-  ###########
-  # Keybase #
-  ###########
-  - name: Install Keybase
-    apt:
-      deb: https://prerelease.keybase.io/keybase_amd64.deb
-    become: yes
-
-  ######################
-  # Visual Studio Code #
-  ######################
-  - name: Install Visual Studio Code
-    apt:
-      deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-    become: yes
-
-  #################
-  # Final cleanup #
-  #################
-  - name: Remove packages not needed anymore
-    apt:
-      autoremove: yes
-    become: yes
+    - name: Create $HOME/bin if it does not exist
+      ansible.builtin.file:
+        path: "{{ bin }}"
+        state: directory
+        mode: "u+rwx"
+
+    - name: Create $HOME/progs if it does not exist
+      ansible.builtin.file:
+        path: "{{ progsdir }}"
+        state: directory
+        mode: "u+rwx"
+
+    - name: Add $HOME/bin to $PATH.
+      ansible.builtin.lineinfile:
+        path: "{{ homedir }}/.pam_environment"
+        state: present
+        line: "PATH DEFAULT=${PATH}:{{ bin }}"
+        create: true
+        mode: "u+rwx"
+
+    - name: Add $HOME/.local/bin to $PATH.
+      ansible.builtin.lineinfile:
+        path: "{{ homedir }}/.pam_environment"
+        state: present
+        line: "PATH DEFAULT=${PATH}:/home/@{PAM_USER}/.local/bin"
+        create: true
+        mode: "u+rwx"
+
+    - name: Add deb packages repositories
+      block:
+        - name: Download extra APT signing keys
+          ansible.builtin.get_url:
+            url: "{{ item.value.url }}"
+            dest: "{{ aptkeysdir }}/{{ item.key }}"
+          loop: "{{ lookup('ansible.builtin.dict', signing_keys) }}"
+
+        - name: De-Armor APT signing keys
+          ansible.builtin.shell:
+            cmd: "gpg --dearmor < {{ aptkeysdir }}/{{ item.key }} > {{ aptkeysdir }}/{{ item.key }}.gpg"
+          args:
+            creates: "{{ aptkeysdir }}/{{ item.key }}.gpg"
+          loop: "{{ lookup('ansible.builtin.dict', signing_keys) }}"
+
+
+        - name: Add extra APT repositories
+          ansible.builtin.apt_repository:
+            repo: "{{ item }}"
+            codename: "{{ codename }}"
+            state: present
+            update_cache: false
+          loop: "{{ repos }}"
+      become: true
+
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+        update_cache: true
+      become: true
+
+    - name: Include list of packages
+      ansible.builtin.include_vars:
+        file: packages.yml
+        name: package_list
+
+    - name: Install .deb packages
+      ansible.builtin.apt:
+        name: "{{ package_list.deb }}"
+        state: latest
+        update_cache: true
+      become: true
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name: "{{ package_list.flatpak }}"
+        state: latest
+
+    #########################################
+    # From here on we install and configure #
+    # stuff that requires special steps.    #
+    #########################################
+
+    - name: Create temporary directory to store downloaded files
+      ansible.builtin.file:
+        path: "{{ tempdir }}"
+        state: directory
+        mode: "u+rwx"
+
+    - name: libdvd-pkg needs dpkg-reconfigure
+      ansible.builtin.command:
+        cmd: dpkg-reconfigure -f noninteractive libdvd-pkg
+      register: result
+      become: true
+      changed_when:
+        - '"is already installed." not it result.stdout'
+
+    - name: Ensure fonts directory exists for Nerd fonts
+      file:
+        path: "{{ homedir }}/.fonts"
+        state: directory
+        mode: "u+rwx"
+
+    - name: Get the URL for the latest version of JetBrains Mono Nerd Fonts
+      uri:
+        url: https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+        return_content: true
+      register: jetbrains_data
+
+    - name: Install Jetbrains Mono Nerd Fonts
+      ansible.builtin.unarchive:
+        src: "{{ jetbrains_data.json | community.general.json_query(data_query) }}"
+        remote_src: true
+        dest: "{{ homedir }}/.fonts"
+      vars:
+        data_query: "assets[?ends_with(browser_download_url, 'JetBrainsMono.zip')].browser_download_url"
+
+    - name: Clone fzf fuzzy finder
+      ansible.builtin.git:
+        repo: https://github.com/junegunn/fzf.git
+        version: "master"
+        single_branch: true
+        depth: 1
+        dest: "{{ homedir }}/.fzf"
+
+    ##############################
+    # Hugo static site generator #
+    ##############################
+    - name: Get the URL for the latest version of Hugo from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/gohugoio/hugo/releases/latest
+        return_content: true
+      register: hugo_data
+
+    - name: Install the latest version of Hugo from the temporary file
+      ansible.builtin.apt:
+        deb: "{{ hugo_data.json | community.general.json_query(data_query) }}"
+      become: true
+      vars:
+        data_query: "assets[?ends_with(browser_download_url, 'linux-amd64.deb')]
+          | [?contains(browser_download_url, 'extended')].browser_download_url"
+
+    ################
+    # Python stuff #
+    ################
+    - name: Install pipx
+      pip:
+        name: pipx
+        extra_args: --user
+
+    - name: Download pyenv installer (will be executed later)
+      get_url:
+        url: https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer
+        dest: "{{ tempdir }}/pyenv-installer"
+        mode: u+rwx
+
+    - name: Download Poetry installer (will be executed later)
+      get_url:
+        url: https://install.python-poetry.org
+        dest: "{{ tempdir }}/install-poetry.py"
+        mode: u+rwx
+
+    - name: Add Python stuff to .zshrc
+      blockinfile:
+        path: "{{ homedir }}/.zshrc"
+        block: |
+          export PATH="{{ homedir }}/.pyenv/bin:$PATH"
+          eval "$(pyenv init -)"
+          eval "$(pyenv virtualenv-init -)"
+
+    #############
+    # Syncthing #
+    #############
+    - name: Get the URL for the latest version of Syncthing from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/syncthing/syncthing/releases/latest
+        return_content: true
+      register: syncthing_data
+
+    - name: Download Syncthing
+      ansible.builtin.unarchive:
+        src: "{{ syncthing_data.json | community.general.json_query(data_query) }}"
+        remote_src: true
+        dest: "{{ progsdir }}/syncthing"
+      vars:
+        data_query: "assets[?contains(browser_download_url, 'syncthing-linux-amd64')].browser_download_url"
+
+
+    ######################################################
+    # kubectx - kubectl is installed via package manager #
+    ######################################################
+    - name: Get the URL for the latest version of kubectx from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/ahmetb/kubectx/releases/latest
+        return_content: true
+      register: kubectx_data
+
+    - name: Download kubectx
+      ansible.builtin.unarchive:
+        src: "{{ kubectx_data.json | community.general.json_query(data_query) }}"
+        remote_src: true
+        dest: "{{ bin }}/kubectx"
+      vars:
+        data_query: "assets[?contains(browser_download_url, 'kubectx_v')]
+          | [?ends_with(browser_download_url, '_linux_x86_64.tar.gz')].browser_download_url"
+
+    #####################################################
+    # kubens - kubectl is installed via package manager #
+    #####################################################
+    - name: Get the URL for the latest version of kubens from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/ahmetb/kubectx/releases/latest
+        return_content: true
+      register: kubens_data
+
+    - name: Download kubens
+      ansible.builtin.unarchive:
+        src: "{{ kubens_data.json | community.general.json_query(data_query) }}"
+        remote_src: true
+        dest: "{{ bin }}/kubens"
+      vars:
+        data_query: "assets[?contains(browser_download_url, 'kubens_v')]
+          | [?ends_with(browser_download_url, '_linux_x86_64.tar.gz')].browser_download_url"
+
+    #######
+    # k9s #
+    #######
+    - name: Get the URL for the latest version of k9s from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/derailed/k9s/releases/latest
+        return_content: true
+      register: k9s_data
+
+    - name: Download k9s
+      ansible.builtin.unarchive:
+        src: "{{ k9s_data.json | community.general.json_query(data_query) }}"
+        remote_src: true
+        dest: "{{ bin }}/k9s"
+      vars:
+        data_query: "assets[?contains(browser_download_url, 'kubens_v')]
+          | [?ends_with(browser_download_url, 'k9s_Linux_x86_64.tar.gz')].browser_download_url"
+
+
+    ########
+    # Helm #
+    ########
+    - name: Download Helm to a temporary file
+      ansible.builtin.unarchive:
+        src: "https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz"
+        remote_src: true
+        include: "linux-amd64/helm"
+        dest: "{{ bin }}/helm"
+
+
+    ###########
+    # Lazygit #
+    ###########
+    - name: Get the URL for the latest version of lazygit from Github
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+        return_content: true
+      register: lazygit_data
+
+    - name: Extract lazygit into temporary directory
+      ansible.builtin.unarchive:
+        src: "{{ lazygit_data.json | community.general.json_query(data_query) }}"
+        include: "lazygit"
+        dest: "{{ bin }}/lazygit"
+      vars:
+        data_query: "assets[?ends_with(browser_download_url, '_Linux_x86_64.tar.gz')].browser_download_url"
+
+    ###########
+    # Keybase #
+    ###########
+    - name: Install Keybase
+      ansible.builtin.apt:
+        deb: https://prerelease.keybase.io/keybase_amd64.deb
+      become: true
+
+    ######################
+    # Visual Studio Code #
+    ######################
+    - name: Install Visual Studio Code
+      ansible.builtin.apt:
+        deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+      become: true
+
+    #################
+    # Final cleanup #
+    #################
+    - name: Remove packages not needed anymore
+      ansible.builtin.apt:
+        autoremove: true
+      become: true

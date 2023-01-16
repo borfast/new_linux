@@ -23,7 +23,10 @@ printf "\n--> Running special installers:\n" &&
 pushd ./temp &&
 
 printf "\n--> Installing oh-my-zsh...\n" &&
-./install-oh-my-zsh.sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
+
+printf "\n--> Installing Volta...\n" &&
+curl https://get.volta.sh | bash &&
 
 printf "\n--> Installing pyenv...\n" &&
 ./pyenv-installer &&
@@ -59,7 +62,7 @@ echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
 printf "\n--> Installing fzf...\n" &&
-$HOME/.fzf/install --key-bindings --completion --no-fish --update-rc &&
+$HOME/.fzf/install --key-bindings --completion --update-rc &&
 
 ## Clean up
 popd &&

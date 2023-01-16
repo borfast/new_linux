@@ -26,13 +26,12 @@ deb:
   - make
   - meld
   - mysql-client
-  - nodejs
   - openjdk-19-jdk
   - openjdk-19-jre
   - openjdk-19-source
   - postgresql-client
   - postgresql-contrib
-  - python-pip-whl
+  - python3-pip-whl
   - python3-all-dev
   - python3-openssl
   - python3-pip
@@ -44,7 +43,6 @@ deb:
   - ruby-dev
   - tk-dev
   - xz-utils
-  - yarn
   - zlib1g-dev
 
   # GRAPHICS
