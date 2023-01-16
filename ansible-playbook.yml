@@ -64,7 +64,7 @@
   - name: Add extra APT repositories
     apt_repository:
       repo: "{{ item }}"
-      codename: "focal"
+      codename: "{{ CODENAME }}"
       state: present
       update_cache: no
     loop: "{{ REPOS }}"
@@ -82,12 +82,17 @@
       file: packages.yml
       name: package_list
 
-  - name: Install packages
+  - name: Install .deb packages
     apt:
-      name: "{{ package_list.packages }}"
+      name: "{{ package_list.deb }}"
       state: latest
       update_cache: yes
     become: yes
+
+  - name: Install Flatpak packages
+    community.general.flatpak:
+      name: "{{ package_list.flatpak }}"
+      state: latest
 
   #########################################
   # From here on we install and configure #
@@ -186,23 +191,6 @@
     apt:
       deb: "{{ TEMPDIR }}/{{ (hugo_version.stdout | from_json).filename }}"
     become: yes
-
-
-  ##############################
-  # Flatpak dark theme support #
-  ##############################
-  - name: Install the Mint Y Dark Aqua flatpak support
-    community.general.flatpak:
-      name: org.gtk.Gtk3theme.Mint-Y-Dark-Aqua
-      state: present
-
-  ###########
-  # DBeaver #
-  ###########
-  - name: Install the DBeaver flatpak
-    community.general.flatpak:
-      name: io.dbeaver.DBeaverCommunity
-      state: present
 
   ################
   # Python stuff #

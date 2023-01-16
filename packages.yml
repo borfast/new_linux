@@ -1,4 +1,4 @@
-packages:
+deb:
   # DEVELOPMENT
   - build-essential
   - cmake
@@ -50,7 +50,6 @@ packages:
   # GRAPHICS
   - gimp
   - inkscape
-  - flameshot
 
   # MULTIMEDIA
   - gstreamer1.0-plugins-base
@@ -90,7 +89,6 @@ packages:
   - zsh-syntax-highlighting
 
   # UTILS
-  - compizconfig-settings-manager
   - curl
   - gparted
   - htop
@@ -114,3 +112,26 @@ packages:
   - google-chrome-stable
   - brave-browser
   - warpinator
+
+
+
+flatpak:
+  - org.gtk.Gtk3theme.Mint-Y-Dark-Aqua
+  - org.flameshot.Flameshot
+  - io.dbeaver.DBeaverCommunity
+  - com.calibre_ebook.calibre
+  - com.github.tchx84.Flatseal
+  - com.github.zadam.trilium
+  - com.rafaelmardojai.Blanket
+  - com.stremio.Stremio
+  - fr.handbrake.ghb
+  - io.podman_desktop.PodmanDesktop
+  - md.obsidian.Obsidian
+  - net.cozic.joplin_desktop
+  - net.davidotek.pupgui2
+  - net.lutris.Lutris
+  - org.audacityteam.Audacity
+  - org.blender.Blender
+  - org.gnucash.GnuCash
+  - org.kde.kdenlive
+  - org.openscad.OpenSCAD
