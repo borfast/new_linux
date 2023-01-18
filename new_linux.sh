@@ -26,7 +26,7 @@ printf "\n--> Installing oh-my-zsh...\n" &&
 ./install-oh-my-zsh.sh
 
 printf "\n--> Installing pyenv...\n" &&
-./pyenv-installer
+./pyenv-installer &&
 
 printf "\n--> Installing poetry...\n" &&
 python3 "./install-poetry.py" &&
