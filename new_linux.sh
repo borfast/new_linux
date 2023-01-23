@@ -69,3 +69,5 @@ popd &&
 printf "\nRemoving temporary directory..." &&
 rm -rf ./temp &&
 printf "\n--> All done!\n"
+
+printf "\n\n NOTE \nIf you're on Linux Mint, install the mintsources package as well.\n\n" &&

@@ -76,7 +76,6 @@ deb:
   - gnupg-agent
   - mesa-vulkan-drivers
   - mesa-va-drivers
-  - mintsources
   - python3-software-properties
   - qemu-kvm
   - qemu-utils
