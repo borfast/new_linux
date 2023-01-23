@@ -70,4 +70,8 @@ printf "\nRemoving temporary directory..." &&
 rm -rf ./temp &&
 printf "\n--> All done!\n"
 
-printf "\n\n NOTE \nIf you're on Linux Mint, install the mintsources package as well.\n\n" &&
+printf "\n\n NOTE \nIf you're on Linux Mint, install the following packages as well:\n"
+printf "mintsources\n"
+printf "warpinator\n\n"
+printf "Here's a command you can copy&paste:\n"
+printf "sudo apt install mintsources warpinator\n\n"
