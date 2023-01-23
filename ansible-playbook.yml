@@ -107,6 +107,7 @@
         name: flathub
         state: present
         flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+      become: true
 
     - name: Install Flatpak packages
       community.general.flatpak:
