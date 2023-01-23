@@ -102,6 +102,12 @@
         update_cache: true
       become: true
 
+    - name: Add the flathub flatpak repository remote
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
     - name: Install Flatpak packages
       community.general.flatpak:
         name: "{{ package_list.flatpak }}"
