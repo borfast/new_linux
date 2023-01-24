@@ -125,14 +125,6 @@
         state: directory
         mode: "u+rwx"
 
-    - name: libdvd-pkg needs dpkg-reconfigure
-      ansible.builtin.command:
-        cmd: dpkg-reconfigure -f noninteractive libdvd-pkg
-      register: result
-      become: true
-      changed_when:
-        - '"is already installed." not it result.stdout'
-
     - name: Ensure fonts directory exists for Nerd fonts
       file:
         path: "{{ homedir }}/.fonts"

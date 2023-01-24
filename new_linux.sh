@@ -19,6 +19,9 @@ ansible-galaxy collection install community.general &&
 printf "\n--> Running Ansible playbook - this is the big one!\n" &&
 ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
+printf "\n--> libdvd-pkg needs dpkg-reconfigure...\n" &&
+dpkg-reconfigure -f noninteractive libdvd-pkg &&
+
 printf "\n--> Running special installers:\n" &&
 pushd ./temp &&
 
