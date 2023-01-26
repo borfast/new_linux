@@ -28,8 +28,11 @@ pushd ./temp &&
 printf "\n--> Installing oh-my-zsh...\n" &&
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
 
-printf "\n--> Installing Volta...\n" &&
-curl https://get.volta.sh | bash &&
+printf "\n--> Installing pnpm...\n" &&
+curl -fsSL https://get.pnpm.io/install.sh | sh - &&
+
+printf "\n--> Installing node...\n" &&
+pnpm env use --global 18 &&
 
 printf "\n--> Installing pyenv...\n" &&
 ./pyenv-installer &&
