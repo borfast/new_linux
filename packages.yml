@@ -64,7 +64,9 @@ deb:
   - clamav
   - clamav-freshclam
   - chkrootkit
+  - gufw
   - rkhunter
+  - ufw
 
   # SYSTEM
   - acpi
