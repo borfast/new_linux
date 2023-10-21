@@ -20,7 +20,7 @@ printf "\n--> Running Ansible playbook - this is the big one!\n" &&
 ansible-playbook ansible-playbook.yml --ask-become-pass &&
 
 printf "\n--> libdvd-pkg needs dpkg-reconfigure...\n" &&
-dpkg-reconfigure -f noninteractive libdvd-pkg &&
+sudo dpkg-reconfigure -f noninteractive libdvd-pkg &&
 
 printf "\n--> Running special installers:\n" &&
 pushd ./temp &&
@@ -43,7 +43,7 @@ python3 "./install-poetry.py" &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install exa ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui &&
+cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&
@@ -62,8 +62,8 @@ git config --global delta.hunk-header-style "file line-number syntax" &&
 
 
 
-printf "\n--> Setting up aliases for ls -> exa, grep -> rg, and cat -> bat...\n" &&
-echo 'alias ls="exa"' >> $HOME/.zshrc &&
+printf "\n--> Setting up aliases for ls -> eza, grep -> rg, and cat -> bat...\n" &&
+echo 'alias ls="eza --icons"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
@@ -81,3 +81,7 @@ printf "mintsources\n"
 printf "warpinator\n\n"
 printf "Here's a command you can copy&paste:\n"
 printf "sudo apt install mintsources warpinator\n\n"
+
+printf "Other things you need to install:\n"
+printf "- Slack\n"
+printf "- IDEs"

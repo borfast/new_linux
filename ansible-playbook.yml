@@ -13,17 +13,11 @@
       - ppa:inkscape.dev/stable
       - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
-      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/google_cloud.gpg.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
       - "deb [arch=amd64 signed-by={{ aptkeysdir }}/docker.gpg.gpg] https://download.docker.com/linux/ubuntu {{ codename }} stable"
-      - "deb [arch=amd64 signed-by={{ aptkeysdir }}/ngrok.asc.gpg] https://ngrok-agent.s3.amazonaws.com buster main"
       - "deb [arch=amd64 signed-by={{ aptkeysdir }}/brave.gpg.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
     signing_keys:
-      google_cloud.gpg:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       docker.gpg:
         url: https://download.docker.com/linux/ubuntu/gpg
-      ngrok.asc:
-        url: https://ngrok-agent.s3.amazonaws.com/ngrok.asc
       brave.gpg:
         url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
@@ -131,19 +125,19 @@
         state: directory
         mode: "u+rwx"
 
-    - name: Get the URL for the latest version of JetBrains Mono Nerd Fonts
-      uri:
-        url: https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
-        return_content: true
-      register: jetbrains_data
-
-    - name: Install Jetbrains Mono Nerd Fonts
-      ansible.builtin.unarchive:
-        src: "{{ jetbrains_data.json | community.general.json_query(data_query) }}"
-        remote_src: true
-        dest: "{{ homedir }}/.fonts"
-      vars:
-        data_query: "assets[?ends_with(browser_download_url, 'JetBrainsMono.zip')].browser_download_url"
+#    - name: Get the URL for the latest version of JetBrains Mono Nerd Fonts
+#      uri:
+#        url: https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
+#        return_content: true
+#      register: jetbrains_data
+#
+#    - name: Install Jetbrains Mono Nerd Fonts
+#      ansible.builtin.unarchive:
+#        src: "{{ jetbrains_data.json | community.general.json_query(data_query) }}"
+#        remote_src: true
+#        dest: "{{ homedir }}/.fonts"
+#      vars:
+#        data_query: "assets[?ends_with(browser_download_url, 'JetBrainsMono.zip')].browser_download_url"
 
     - name: Clone fzf fuzzy finder
       ansible.builtin.git:
@@ -156,19 +150,19 @@
     ##############################
     # Hugo static site generator #
     ##############################
-    - name: Get the URL for the latest version of Hugo from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/gohugoio/hugo/releases/latest
-        return_content: true
-      register: hugo_data
-
-    - name: Install the latest version of Hugo from the temporary file
-      ansible.builtin.apt:
-        deb: "{{ hugo_data.json | community.general.json_query(data_query) }}"
-      become: true
-      vars:
-        data_query: "assets[?ends_with(browser_download_url, 'linux-amd64.deb')]
-          | [?contains(browser_download_url, 'extended')].browser_download_url"
+#    - name: Get the URL for the latest version of Hugo from Github
+#      ansible.builtin.uri:
+#        url: https://api.github.com/repos/gohugoio/hugo/releases/latest
+#        return_content: true
+#      register: hugo_data
+#
+#    - name: Install the latest version of Hugo from the temporary file
+#      ansible.builtin.apt:
+#        deb: "{{ hugo_data.json | community.general.json_query(data_query) }}"
+#      become: true
+#      vars:
+#        data_query: "assets[?ends_with(browser_download_url, 'linux-amd64.deb')]
+#          | [?contains(browser_download_url, 'extended')].browser_download_url"
 
     ################
     # Python stuff #
@@ -201,103 +195,19 @@
     #############
     # Syncthing #
     #############
-    - name: Get the URL for the latest version of Syncthing from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/syncthing/syncthing/releases/latest
-        return_content: true
-      register: syncthing_data
-
-    - name: Download Syncthing
-      ansible.builtin.unarchive:
-        src: "{{ syncthing_data.json | community.general.json_query(data_query) }}"
-        remote_src: true
-        dest: "{{ progsdir }}/syncthing"
-      vars:
-        data_query: "assets[?contains(browser_download_url, 'syncthing-linux-amd64')].browser_download_url"
-
-
-    ######################################################
-    # kubectx - kubectl is installed via package manager #
-    ######################################################
-    - name: Get the URL for the latest version of kubectx from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/ahmetb/kubectx/releases/latest
-        return_content: true
-      register: kubectx_data
-
-    - name: Download kubectx
-      ansible.builtin.unarchive:
-        src: "{{ kubectx_data.json | community.general.json_query(data_query) }}"
-        remote_src: true
-        dest: "{{ bin }}/kubectx"
-      vars:
-        data_query: "assets[?contains(browser_download_url, 'kubectx_v')]
-          | [?ends_with(browser_download_url, '_linux_x86_64.tar.gz')].browser_download_url"
-
-    #####################################################
-    # kubens - kubectl is installed via package manager #
-    #####################################################
-    - name: Get the URL for the latest version of kubens from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/ahmetb/kubectx/releases/latest
-        return_content: true
-      register: kubens_data
-
-    - name: Download kubens
-      ansible.builtin.unarchive:
-        src: "{{ kubens_data.json | community.general.json_query(data_query) }}"
-        remote_src: true
-        dest: "{{ bin }}/kubens"
-      vars:
-        data_query: "assets[?contains(browser_download_url, 'kubens_v')]
-          | [?ends_with(browser_download_url, '_linux_x86_64.tar.gz')].browser_download_url"
-
-    #######
-    # k9s #
-    #######
-    - name: Get the URL for the latest version of k9s from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/derailed/k9s/releases/latest
-        return_content: true
-      register: k9s_data
-
-    - name: Download k9s
-      ansible.builtin.unarchive:
-        src: "{{ k9s_data.json | community.general.json_query(data_query) }}"
-        remote_src: true
-        dest: "{{ bin }}/k9s"
-      vars:
-        data_query: "assets[?contains(browser_download_url, 'kubens_v')]
-          | [?ends_with(browser_download_url, 'k9s_Linux_x86_64.tar.gz')].browser_download_url"
-
-
-    ########
-    # Helm #
-    ########
-    - name: Download Helm to a temporary file
-      ansible.builtin.unarchive:
-        src: "https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz"
-        remote_src: true
-        include: "linux-amd64/helm"
-        dest: "{{ bin }}/helm"
-
-
-    ###########
-    # Lazygit #
-    ###########
-    - name: Get the URL for the latest version of lazygit from Github
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
-        return_content: true
-      register: lazygit_data
-
-    - name: Extract lazygit into temporary directory
-      ansible.builtin.unarchive:
-        src: "{{ lazygit_data.json | community.general.json_query(data_query) }}"
-        include: "lazygit"
-        dest: "{{ bin }}/lazygit"
-      vars:
-        data_query: "assets[?ends_with(browser_download_url, '_Linux_x86_64.tar.gz')].browser_download_url"
+#    - name: Get the URL for the latest version of Syncthing from Github
+#      ansible.builtin.uri:
+#        url: https://api.github.com/repos/syncthing/syncthing/releases/latest
+#        return_content: true
+#      register: syncthing_data
+#
+#    - name: Download Syncthing
+#      ansible.builtin.unarchive:
+#        src: "{{ syncthing_data.json | community.general.json_query(data_query) }}"
+#        remote_src: true
+#        dest: "{{ progsdir }}/syncthing"
+#      vars:
+#        data_query: "assets[?contains(browser_download_url, 'syncthing-linux-amd64')].browser_download_url"
 
     ###########
     # Keybase #

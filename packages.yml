@@ -92,9 +92,7 @@ deb:
   - gparted
   - htop
   - jq
-  - kubectl
   - nethogs
-  - ngrok
   - p7zip-full
   - synaptic
   - terminator
