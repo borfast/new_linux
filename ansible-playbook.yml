@@ -147,6 +147,14 @@
         depth: 1
         dest: "{{ homedir }}/.fzf"
 
+    - name: Install asdf package manager
+      ansible.builtin.git:
+        repo: https://github.com/asdf-vm/asdf.git
+        version: "v0.13.1"
+        single_branch: true
+        depth: 1
+        dest: "{{ homedir }}/.fzf"
+
     ##############################
     # Hugo static site generator #
     ##############################
@@ -171,26 +179,6 @@
       pip:
         name: pipx
         extra_args: --user
-
-    - name: Download pyenv installer (will be executed later)
-      get_url:
-        url: https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer
-        dest: "{{ tempdir }}/pyenv-installer"
-        mode: u+rwx
-
-    - name: Download Poetry installer (will be executed later)
-      get_url:
-        url: https://install.python-poetry.org
-        dest: "{{ tempdir }}/install-poetry.py"
-        mode: u+rwx
-
-    - name: Add Python stuff to .zshrc
-      blockinfile:
-        path: "{{ homedir }}/.zshrc"
-        block: |
-          export PATH="{{ homedir }}/.pyenv/bin:$PATH"
-          eval "$(pyenv init -)"
-          eval "$(pyenv virtualenv-init -)"
 
     #############
     # Syncthing #

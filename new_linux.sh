@@ -34,11 +34,8 @@ curl -fsSL https://get.pnpm.io/install.sh | sh - &&
 printf "\n--> Installing node...\n" &&
 pnpm env use --global 18 &&
 
-printf "\n--> Installing pyenv...\n" &&
-./pyenv-installer &&
-
-printf "\n--> Installing poetry...\n" &&
-python3 "./install-poetry.py" &&
+printf "\n--> Installing pdm...\n" &&
+python3 "pipx install pdm" &&
 
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
@@ -85,3 +82,5 @@ printf "sudo apt install mintsources warpinator\n\n"
 printf "Other things you need to install:\n"
 printf "- Slack\n"
 printf "- IDEs"
+printf "- Steam\n"
+printf "- Add the asdf plugin in ~/.zshrc\n"
