@@ -89,6 +89,7 @@ deb:
 
   # UTILS
   - curl
+  - duf
   - gparted
   - htop
   - jq
