@@ -93,6 +93,7 @@ deb:
   - htop
   - jq
   - nethogs
+  - pcscd
   - p7zip-full
   - synaptic
   - terminator
