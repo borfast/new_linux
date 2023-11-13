@@ -214,6 +214,24 @@
       become: true
 
     #################
+    # fx JSON tools #
+    #################
+
+#    - name: Get the URL for the latest version of fx
+#      uri:
+#        url: https://api.github.com/repos/antonmedv/fx/releases/latest
+#        return_content: true
+#      register: fx_data
+#
+#    - name: Install fx
+#      ansible.builtin.unarchive:
+#        src: "{{ fx_data.json | community.general.json_query(data_query) }}"
+#        remote_src: true
+#        dest: "{{ bin }}"
+#      vars:
+#        data_query: "assets[?contains(browser_download_url, 'fx_linux_amd64')].browser_download_url"
+
+    #################
     # Final cleanup #
     #################
     - name: Remove packages not needed anymore
