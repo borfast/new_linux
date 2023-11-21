@@ -58,7 +58,6 @@ deb:
   - libdvd-pkg
   - ubuntu-restricted-extras
   - vlc
-  - vokoscreen
 
   # SECURITY
   - clamav
@@ -118,6 +117,7 @@ flatpak:
   - io.dbeaver.DBeaverCommunity
   - com.calibre_ebook.calibre
   - com.github.tchx84.Flatseal
+  - com.github.vkohaupt.vokoscreenNG
   - com.github.zadam.trilium
   - com.rafaelmardojai.Blanket
   - com.stremio.Stremio
