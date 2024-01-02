@@ -40,7 +40,7 @@ python3 "pipx install pdm" &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui xh &&
+cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui xh atuin &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&

@@ -132,3 +132,8 @@ flatpak:
   - org.gnucash.GnuCash
   - org.kde.kdenlive
   - org.openscad.OpenSCAD
+  - com.github.iwalton3.jellyfin-media-player
+  - org.freedesktop.Piper
+  - org.localsend.localsend_app
+  - org.telegram.desktop
+  - pt.gov.autenticacao
