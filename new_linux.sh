@@ -67,6 +67,10 @@ echo 'alias cat="bat"' >> $HOME/.zshrc &&
 printf "\n--> Installing fzf...\n" &&
 $HOME/.fzf/install --key-bindings --completion --update-rc &&
 
+printf "\n--> Installing mise-en-place...\n" &&
+curl https://mise.run | sh &&
+echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc &&
+
 ## Clean up
 popd &&
 printf "\nRemoving temporary directory..." &&
@@ -83,4 +87,3 @@ printf "Other things you need to install:\n"
 printf "- Slack\n"
 printf "- IDEs"
 printf "- Steam\n"
-printf "- Add the asdf plugin in ~/.zshrc\n"

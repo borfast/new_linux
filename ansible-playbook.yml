@@ -147,14 +147,6 @@
         depth: 1
         dest: "{{ homedir }}/.fzf"
 
-    - name: Install asdf package manager
-      ansible.builtin.git:
-        repo: https://github.com/asdf-vm/asdf.git
-        version: "v0.13.1"
-        single_branch: true
-        depth: 1
-        dest: "{{ homedir }}/.fzf"
-
     ##############################
     # Hugo static site generator #
     ##############################
