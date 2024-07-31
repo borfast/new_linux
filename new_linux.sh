@@ -34,8 +34,8 @@ curl -fsSL https://get.pnpm.io/install.sh | sh - &&
 printf "\n--> Installing node...\n" &&
 pnpm env use --global 18 &&
 
-printf "\n--> Installing pdm...\n" &&
-python3 "pipx install pdm" &&
+printf "\n--> Installing Rye...\n" &&
+curl -sSf https://rye.astral.sh/get | bash &&
 
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
