@@ -34,8 +34,10 @@ curl -fsSL https://get.pnpm.io/install.sh | sh - &&
 printf "\n--> Installing node...\n" &&
 pnpm env use --global 18 &&
 
-printf "\n--> Installing Rye...\n" &&
-curl -sSf https://rye.astral.sh/get | bash &&
+printf "\n--> Installing uv...\n" &&
+curl -LsSf https://astral.sh/uv/install.sh | sh &&
+echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc &&
+
 
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
@@ -60,7 +62,7 @@ git config --global delta.hunk-header-style "file line-number syntax" &&
 
 
 printf "\n--> Setting up aliases for ls -> eza, grep -> rg, and cat -> bat...\n" &&
-echo 'alias ls="eza --icons"' >> $HOME/.zshrc &&
+echo 'alias ls="eza --icons -g"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
