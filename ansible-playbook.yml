@@ -11,7 +11,6 @@
     aptkeysdir: /etc/apt/keyrings
     repos:
       - ppa:inkscape.dev/stable
-      - ppa:qbittorrent-team/qbittorrent-stable
       - ppa:git-core/ppa
       - "deb [arch=amd64 signed-by={{ aptkeysdir }}/docker.gpg.gpg] https://download.docker.com/linux/ubuntu {{ codename }} stable"
       - "deb [arch=amd64 signed-by={{ aptkeysdir }}/brave.gpg.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"

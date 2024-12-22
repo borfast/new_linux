@@ -106,7 +106,6 @@ deb:
   - xz-utils
 
   # STUFF
-  - qbittorrent
   - brave-browser
 
 
