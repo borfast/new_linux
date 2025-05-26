@@ -1,8 +1,10 @@
 #!/bin/bash
 
-## Assuming Linux Mint 21. Should also mostly work with Ubuntu 22.04
+## Assuming Linux Mint 22. Should also mostly work with Ubuntu 24.04
 
-UBUNTU_CODENAME=jammy
+set -euxo pipefail
+
+UBUNTU_CODENAME=noble
 
 # Install Ansible first, so we can run the playbook
 sudo apt update &&
@@ -28,6 +30,9 @@ pushd ./temp &&
 printf "\n--> Installing oh-my-zsh...\n" &&
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
 
+printf "\n--> Installing Atuin...\n" &&
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh &&
+
 printf "\n--> Installing pnpm...\n" &&
 curl -fsSL https://get.pnpm.io/install.sh | sh - &&
 
@@ -42,7 +47,7 @@ echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui xh atuin diskonaut &&
+cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui xh diskonaut zellij alacritty &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&

@@ -3,7 +3,7 @@
   connection: local
 
   vars:
-    codename: jammy
+    codename: noble
     homedir: "{{ ansible_env.HOME }}"
     bin: "{{ homedir }}/bin"
     progsdir: "{{ homedir }}/progs"
