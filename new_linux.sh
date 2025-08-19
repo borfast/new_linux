@@ -99,6 +99,9 @@ curl --proto '=https' --tlsv1.2 -fsLSO https://github.com/neovim/neovim/releases
 rm -rf ~/progs/nvim &&
 tar -C ~/progs -xzf nvim-linux-x86_64.tar.gz &&
 
+printf "\n--> Installing Claude Code...\n" &&
+pnpm install -g @anthropic-ai/claude-code &&
+
 ## Clean up
 popd &&
 printf "\nRemoving temporary directory..." &&
