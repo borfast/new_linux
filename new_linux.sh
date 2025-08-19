@@ -28,19 +28,19 @@ printf "\n--> Running special installers:\n" &&
 pushd ./temp &&
 
 printf "\n--> Installing oh-my-zsh...\n" &&
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
+sh -c "$(curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
 
 printf "\n--> Installing Atuin...\n" &&
 curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh &&
 
 printf "\n--> Installing pnpm...\n" &&
-curl -fsSL https://get.pnpm.io/install.sh | sh - &&
+curl --proto '=https' --tlsv1.2 -fsSL https://get.pnpm.io/install.sh | sh - &&
 
 printf "\n--> Installing node...\n" &&
 pnpm env use --global 18 &&
 
 printf "\n--> Installing uv...\n" &&
-curl -LsSf https://astral.sh/uv/install.sh | sh &&
+curl --proto '=https' --tlsv1.2 -LsSf https://astral.sh/uv/install.sh | sh &&
 echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc &&
 
 
@@ -71,12 +71,33 @@ echo 'alias ls="eza --icons -g"' >> $HOME/.zshrc &&
 echo 'alias grep="rg"' >> $HOME/.zshrc &&
 echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
+printf "\n--> Installing zoxide...\n" &&
+curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh &&
+
 printf "\n--> Installing fzf...\n" &&
 $HOME/.fzf/install --key-bindings --completion --update-rc &&
 
 printf "\n--> Installing mise-en-place...\n" &&
-curl https://mise.run | sh &&
+curl --proto '=https' --tlsv1.2 https://mise.run | sh &&
 echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc &&
+
+printf "\n--> Installing chezmoi...\n" &&
+sh -c "$(curl --proto '=https' --tlsv1.2 -fsLS get.chezmoi.io)" &&
+
+# Install Go
+printf "\n--> Installing Go...\n" &&
+curl --proto '=https' --tlsv1.2 -sSfL https://go.dev/dl/go1.25.0.linux-amd64.tar.gz -o /tmp/go1.25.0.linux-amd64.tar.gz &&
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/go1.25.0.linux-amd64.tar.gz && rm -rf /tmp/go1.25.0.linux-amd64.tar.gz &&
+
+printf "\n--> Installing fish shell...\n" &&
+sudo add-apt-repository -y ppa:fish-shell/release-4 &&
+sudo apt update -y &&
+sudo apt install fish &&
+
+printf "\n--> Installing neovim...\n" &&
+curl --proto '=https' --tlsv1.2 -fsLSO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz &&
+rm -rf ~/progs/nvim &&
+tar -C ~/progs -xzf nvim-linux-x86_64.tar.gz &&
 
 ## Clean up
 popd &&
