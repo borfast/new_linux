@@ -100,6 +100,10 @@ curl --proto '=https' --tlsv1.2 -fsLSO https://github.com/neovim/neovim/releases
 rm -rf ~/progs/nvim &&
 tar -C ~/progs -xzf nvim-linux-x86_64.tar.gz &&
 
+printf "\n--> Use neovim to view manpages with syntax highlighting...\n" &&
+echo '# Use neovim to view manpages, with syntax highlighting, and shitz.' >> ~/.zshrc &&
+echo 'export MANPAGER="nvim +Man!"' >> ~/.zshrc &&
+
 printf "\n--> Installing Claude Code...\n" &&
 pnpm install -g @anthropic-ai/claude-code &&
 
@@ -119,4 +123,3 @@ printf "Other things you need to install:\n"
 printf "- Slack\n"
 printf "- IDEs"
 printf "- Steam\n"
-
