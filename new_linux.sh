@@ -47,7 +47,7 @@ echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship gitui xh diskonaut zellij alacritty &&
+cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship xh diskonaut zellij alacritty &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&
@@ -73,6 +73,7 @@ echo 'alias cat="bat"' >> $HOME/.zshrc &&
 
 printf "\n--> Installing zoxide...\n" &&
 curl --proto '=https' --tlsv1.2 -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh &&
+echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc &&
 
 printf "\n--> Installing fzf...\n" &&
 $HOME/.fzf/install --key-bindings --completion --update-rc &&
@@ -118,3 +119,4 @@ printf "Other things you need to install:\n"
 printf "- Slack\n"
 printf "- IDEs"
 printf "- Steam\n"
+
