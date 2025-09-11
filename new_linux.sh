@@ -47,7 +47,7 @@ echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc &&
 printf "\n--> Installing Rust and related goodies...\n" &&
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh &&
 source $HOME/.cargo/env &&
-cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta starship xh diskonaut zellij alacritty &&
+cargo install eza ripgrep bat fd-find procs du-dust bottom bandwhich grex git-delta xh diskonaut zellij alacritty &&
 
 printf "\n--> Git configuration\n" &&
 git config --global alias.up "pull --rebase --autostash" &&
@@ -64,7 +64,8 @@ git config --global delta.side-by-side true &&
 git config --global delta.keep-plus-minus-markers false &&
 git config --global delta.hunk-header-style "file line-number syntax" &&
 
-
+print "\n--> Installing Starship shell prompt...\n" &&
+curl --proto '=https' --tlsv1.2 -fsLSO https://starship.rs/install.sh | sh -s -- --bin-dir ~/bin/
 
 printf "\n--> Setting up aliases for ls -> eza, grep -> rg, and cat -> bat...\n" &&
 echo 'alias ls="eza --icons -g"' >> $HOME/.zshrc &&
